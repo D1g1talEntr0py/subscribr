@@ -1,5 +1,9 @@
 {
   "cSpell.words": [
-    "Subscribr"
-  ]
+		"Subscribr"
+	],
+	"editor.foldingImportsByDefault": true,
+	"explorer.fileNesting.enabled": true,
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false
 }
