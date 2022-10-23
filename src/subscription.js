@@ -1,18 +1,17 @@
+// eslint-disable-next-line jsdoc/valid-types
+/** @typedef {import('./context-event-handler.js').default} ContextEventHandler */
+
 export default class Subscription {
 	#eventName;
 	#contextEventHandler;
-	#unsubscribe;
 
 	/**
-	 *
-	 * @param {string} eventName
-	 * @param {import('./context-event-handler.js').default} contextEventHandler
-	 * @param {function(string, function(*): void): boolean} unsubscribe
+	 * @param {string} eventName The event name.
+	 * @param {ContextEventHandler} contextEventHandler Then context event handler.
 	 */
-	constructor(eventName, contextEventHandler, unsubscribe) {
+	constructor(eventName, contextEventHandler) {
 		this.#eventName = eventName;
 		this.#contextEventHandler = contextEventHandler;
-		this.#unsubscribe = unsubscribe;
 	}
 
 	/**
@@ -25,29 +24,15 @@ export default class Subscription {
 	}
 
 	/**
-	 * Gets the context which will be bound to the event handler when it is called.
+	 * Gets the context event handler.
 	 *
-	 * @returns {*} The event handler context.
+	 * @returns {ContextEventHandler} The context event handler
 	 */
-	get context() {
-		return this.#contextEventHandler.context;
+	get contextEventHandler() {
+		return this.#contextEventHandler;
 	}
 
-	/**
-	 * Gets the event handler for the subscription.
-	 *
-	 * @returns {function(*): void} The event handler.
-	 */
-	get eventHandler() {
-		return this.#contextEventHandler.eventHandler;
-	}
-
-	/**
-	 * Unsubscribes from the event.
-	 *
-	 * @returns {boolean} true if eventListener has been removed successfully. false if the value is not found or if the value is not an object.
-	 */
-	unsubscribe() {
-		return this.#unsubscribe();
+	get [Symbol.toStringTag]() {
+		return 'Subscription';
 	}
 }

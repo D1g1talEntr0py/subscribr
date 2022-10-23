@@ -1,11 +1,10 @@
+/** @typedef {import('./context-event-handler.js').default} ContextEventHandler */
 export default class Subscription {
     /**
-     *
-     * @param {string} eventName
-     * @param {import('./context-event-handler.js').default} contextEventHandler
-     * @param {function(string, function(*): void): boolean} unsubscribe
+     * @param {string} eventName The event name.
+     * @param {ContextEventHandler} contextEventHandler Then context event handler.
      */
-    constructor(eventName: string, contextEventHandler: import('./context-event-handler.js').default, unsubscribe: (arg0: string, arg1: (arg0: any) => void) => boolean);
+    constructor(eventName: string, contextEventHandler: ContextEventHandler);
     /**
      * Gets the event name for the subscription.
      *
@@ -13,22 +12,12 @@ export default class Subscription {
      */
     get eventName(): string;
     /**
-     * Gets the context which will be bound to the event handler when it is called.
+     * Gets the context event handler.
      *
-     * @returns {*} The event handler context.
+     * @returns {ContextEventHandler} The context event handler
      */
-    get context(): any;
-    /**
-     * Gets the event handler for the subscription.
-     *
-     * @returns {function(*): void} The event handler.
-     */
-    get eventHandler(): (arg0: any) => void;
-    /**
-     * Unsubscribes from the event.
-     *
-     * @returns {boolean} true if eventListener has been removed successfully. false if the value is not found or if the value is not an object.
-     */
-    unsubscribe(): boolean;
+    get contextEventHandler(): import("./context-event-handler.js").default;
+    get [Symbol.toStringTag](): string;
     #private;
 }
+export type ContextEventHandler = import('./context-event-handler.js').default;

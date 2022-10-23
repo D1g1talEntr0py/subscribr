@@ -3,7 +3,6 @@ export default class ContextEventHandler {
 	#eventHandler;
 
 	/**
-	 *
 	 * @param {*} context The context to bind to the event handler.
 	 * @param {function(*): void} eventHandler The event handler to call when the event is published.
 	 */
@@ -12,12 +11,14 @@ export default class ContextEventHandler {
 		this.#eventHandler = eventHandler;
 	}
 
-	get context() {
-		return this.#context;
-	}
-
-	get eventHandler() {
-		return this.#eventHandler;
+	/**
+	 * Call the event handler for the provided event.
+	 *
+	 * @param {Event} event The event to handle
+	 * @param {*} [data] The value to be passed to the event handler as a parameter.
+	 */
+	handle(event, data) {
+		this.#eventHandler.call(this.#context, event, data);
 	}
 
 	get [Symbol.toStringTag]() {

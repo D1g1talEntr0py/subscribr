@@ -3,27 +3,59 @@ JavaScript Publish/Subscribe
 
 This simple class enables you to subscribe and publish events using the Observer pattern.
 
+Basically, you subscribe your event handler using the `Subscribr` instance and are returned a `Subscription` instance.
+
+When the event is published, your event handler will be called.
+
 ### Installation:
 ```bash
 npm install @d1g1tal/subscribr --save
 ```
+Or Script tags from downloaded script or from a NPM CDN like jsDelivr
+
+```html
+<!-- Load as global script -->
+<script src="/app/js/subscribr.min.js"></script>
+
+<!-- Load from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@d1g1tal/subscribr@2/dist/browser/subscribr.min.js"></script>
+```
 
 ### Usage:
 ```javascript
+// ES Module
+import Subscribr from '@d1g1tal/subscribr';
+
 const subscribr = new Subscribr();
 const eventName = 'myEvent';
-const eventHandler = (event) => console.log(`Event: '${event.type}' published`);
 
 // Subscribr.prototype.subscribe returns a Subscription object.
-const subscription = subscribr.subscribe(eventName, eventHandler);
+const mySubscription = subscribr.subscribe(eventName, (event, data) => console.log(`Event: '${event.type}' published with data: ${data}`));
 
-// Publish the event and all handlers that have subscribed are called
-subscribr.publish(eventName, new Event(eventName)); // Event: 'myEvent' published
+// Publish the event with just the name and a CustomEvent will be created with the eventName. All handlers that have subscribed are called
+subscribr.publish(eventName, { foo: 'bar', zip: 'fizz' }); // Event: 'myEvent' published with data: { foo: 'bar', zip: 'fizz' }
 
 // Is the event subscribed?
-const isSubscribed = subscribr.isSubscribed(subscription); // true
+const isSubscribed = subscribr.isSubscribed(mySubscription); // true
 
-const isUnsubscribed = subscription.unsubscribe(); // true
+const isUnsubscribed = subscribr.unsubscribe(mySubscription); // true
 
-const isSubscribed = subscribr.isSubscribed(subscription); // false
+const isSubscribed = subscribr.isSubscribed(mySubscription); // false
+
+
+// Subscribe to a DOM event
+const eventTargetSubscription = subsribr.subscribe('eventTargetChanged', (event, data) => console.log(`Event target changed with data: ${data}`));
+
+// Add some event to an event target (DOMElement)
+new EventTarget().addEventListener('change', function(event) {
+	// Publish the event and all handlers that have subscribed are called
+	subscribr.publish('eventTargetChanged', event, { value: this.value }); // Event target changed with data: {value: 'new value'}
+});
+
+// Is the event subscribed?
+const isSubscribed = subscribr.isSubscribed(eventTargetSubscription); // true
+
+const isUnsubscribed = subscribr.unsubscribe(eventTargetSubscription); // true
+
+const isSubscribed = subscribr.isSubscribed(eventTargetSubscription); // false
 ```
