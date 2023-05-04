@@ -1,5 +1,4 @@
-// eslint-disable-next-line jsdoc/valid-types
-/** @typedef {import('./context-event-handler.js').default} ContextEventHandler */
+/** @typedef { import('./context-event-handler.js').default } ContextEventHandler */
 
 export default class Subscription {
 	#eventName;

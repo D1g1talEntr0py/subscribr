@@ -53,7 +53,7 @@ export default class Subscribr {
 	 */
 	publish(eventName, event = new CustomEvent(eventName), data) {
 		if (data == null && !(event instanceof Event)) {
-			// Swap the event and data parameters becuase only data was passesed without an event object
+			// Swap the event and data parameters because only data was passed without an event object
 			[data, event] = [event, new CustomEvent(eventName)];
 		}
 		this.#subscribers.get(eventName)?.forEach((contextEventHandler) => contextEventHandler.handle(event, data));
