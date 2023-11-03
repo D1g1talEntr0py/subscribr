@@ -1,5 +1,5 @@
 import { _type } from '@d1g1tal/chrysalis';
-import '@d1g1tal/chrysalis/ext/object-is-type.js';
+import '@d1g1tal/chrysalis/proto/object-is-type.js';
 import { describe, expect, jest, test } from '@jest/globals';
 import ContextEventHandler from '../src/context-event-handler.js';
 import Subscribr from '../src/subscribr.js';

@@ -48,7 +48,7 @@ export default class Subscribr {
 	 * Publish an event
 	 *
 	 * @param {string} eventName The name of the event.
-	 * @param {Event} event The event to be handled.
+	 * @param {Event} [event=new CustomEvent(eventName)] The event to be handled.
 	 * @param {*} [data] The value to be passed to the event handler as a parameter.
 	 */
 	publish(eventName, event = new CustomEvent(eventName), data) {
