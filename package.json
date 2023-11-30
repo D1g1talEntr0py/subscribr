@@ -1,6 +1,6 @@
 {
 	"name": "@d1g1tal/subscribr",
-	"version": "3.0.2",
+	"version": "3.0.3",
 	"description": "JavaScript Publish/Subscribe Library",
 	"type": "module",
 	"exports": {
@@ -40,13 +40,12 @@
 		"@d1g1tal/collections": "^0.2.5"
 	},
 	"devDependencies": {
-		"@d1g1tal/chrysalis": "^2.2.0",
-		"@skypack/package-check": "^0.2.2",
-		"esbuild": "^0.19.5",
-		"esbuild-library": "^1.0.1",
-		"eslint": "^8.52.0",
+		"@d1g1tal/chrysalis": "^2.2.1",
+		"esbuild": "^0.19.8",
+		"esbuild-library": "^1.0.3",
+		"eslint": "^8.54.0",
 		"eslint-plugin-compat": "^4.2.0",
-		"eslint-plugin-jsdoc": "^46.8.2",
+		"eslint-plugin-jsdoc": "^46.9.0",
 		"jest": "^29.7.0"
 	},
 	"jest": {

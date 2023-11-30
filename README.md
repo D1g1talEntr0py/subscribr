@@ -9,16 +9,30 @@ When the event is published, your event handler will be called.
 
 ### Installation:
 ```bash
-npm install @d1g1tal/subscribr --save
+# Install with pnpm
+pnpm install @d1g1tal/subscribr
+
+# Install with NPM
+npm install @d1g1tal/subscribr
 ```
 Or Script tags from downloaded script or from a NPM CDN like jsDelivr
 
 ```html
 <!-- Load as global script -->
-<script src="/app/js/subscribr.min.js"></script>
+<script src="/subscribr/dist/iife/subscribr.min.js"></script>
 
 <!-- Load from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@d1g1tal/subscribr@2/dist/browser/subscribr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@d1g1tal/subscribr@3/dist/iife/subscribr.min.js"></script>
+
+<!-- Load as ES Module -->
+<script type="module">
+	import Subscribr from '/app/js/subscribr.min.js';
+</script>
+
+<!-- Load from CDN -->
+<script type="module">
+	import Subscribr from 'https://cdn.jsdelivr.net/npm/@d1g1tal/subscribr@3/dist/subscribr.min.js';
+</script>
 ```
 
 ### Usage:
