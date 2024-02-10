@@ -37,9 +37,7 @@ export default class Subscribr {
 		const contextEventHandlers = this.#subscribers.get(eventName);
 		const removed = contextEventHandlers?.delete(contextEventHandler);
 
-		if (removed && contextEventHandlers.size == 0) {
-			this.#subscribers.delete(eventName);
-		}
+		if (removed && contextEventHandlers.size === 0) {	this.#subscribers.delete(eventName) }
 
 		return removed;
 	}
