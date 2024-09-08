@@ -1,0 +1,25 @@
+{
+	"clean": true,
+	"compilerOptions": {
+		"strict": true,
+		"sourceMap": true,
+		"declaration": true,
+		"isolatedModules": true,
+		"useUnknownInCatchVariables": true,
+		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
+		"noUncheckedIndexedAccess": true,
+		"skipLibCheck": true,
+		"noImplicitOverride": true,
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"lib": [ "ESNext", "DOM" ]
+	},
+	"include": [ "./src" ],
+	"tsbuild": {
+		"minify": true,
+		"entryPoints": { "subscribr": "src/index.ts" },
+		"noExternal": [	"@d1g1tal/collections" ]
+	}
+}

@@ -2,8 +2,11 @@
   "cSpell.words": [
 		"Subscribr"
 	],
-	"editor.foldingImportsByDefault": true,
-	"explorer.fileNesting.enabled": true,
-	"editor.tabSize": 2,
-	"editor.insertSpaces": false
+	"json.schemas": [
+		{
+			"url": "./node_modules/tsbuild/schema.json",
+			"fileMatch": [ "tsconfig.json" ]
+		}
+	],
+	"typescript.tsdk": "node_modules/typescript/lib"
 }
