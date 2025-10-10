@@ -12,5 +12,6 @@
 *.vsix
 
 dist
+.tsbuild/
 node_modules
 tests/coverage
