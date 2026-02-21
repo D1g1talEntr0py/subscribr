@@ -15,3 +15,4 @@ dist
 .tsbuild/
 node_modules
 tests/coverage
+docs/

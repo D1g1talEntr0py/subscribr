@@ -40,32 +40,29 @@
 		"test": "vitest run",
 		"test:coverage": "vitest run --coverage",
 		"test:watch": "vitest",
-		"prepublish": "pnpm lint && pnpm test && pnpm -s build"
+		"prepublish": "pnpm lint && pnpm test && pnpm -s build --force"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/D1g1talEntr0py/subscribr.git"
 	},
 	"dependencies": {
-		"@d1g1tal/collections": "^2.1.0"
+		"@d1g1tal/collections": "^2.1.1"
 	},
 	"devDependencies": {
-		"@d1g1tal/chrysalis": "^2.5.0",
-		"@eslint/compat": "^1.4.0",
-		"@eslint/js": "^9.37.0",
-		"@types/node": "^24.7.1",
-		"@typescript-eslint/eslint-plugin": "^8.46.0",
-		"@typescript-eslint/parser": "^8.46.0",
-		"@vitest/coverage-v8": "^3.2.4",
-		"eslint": "^9.37.0",
-		"eslint-plugin-compat": "^6.0.2",
-		"eslint-plugin-jsdoc": "^61.1.0",
-		"tsbuild": "link:../tsbuild",
-		"typescript-eslint": "^8.46.0",
-		"vitest": "^3.2.4"
-	},
-	"peerDependencies": {
-		"typescript": "^5.0.0"
+		"@d1g1tal/tsbuild": "1.0.0",
+		"@eslint/compat": "^2.0.2",
+		"@eslint/js": "^10.0.1",
+		"@types/node": "^25.3.0",
+		"@typescript-eslint/eslint-plugin": "^8.56.0",
+		"@typescript-eslint/parser": "^8.56.0",
+		"@vitest/coverage-v8": "^4.0.18",
+		"eslint": "^10.0.1",
+		"eslint-plugin-compat": "^6.2.0",
+		"eslint-plugin-jsdoc": "^62.7.0",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.56.0",
+		"vitest": "^4.0.18"
 	},
 	"browserslist": [
 		"defaults and fully supports es6-module",
