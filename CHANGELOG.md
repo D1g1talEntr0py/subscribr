@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.2](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.1...v4.1.2) (2026-02-21)
+
+
+### Bug Fixes
+
+* upgrade npm to latest for OIDC Trusted Publisher support\n\nnpm Trusted Publisher requires npm v11.5.1+. The GitHub runner ships\nwith an older version, so upgrade before publishing. Also restore\nregistry-url on setup-node as required by the OIDC auth flow. ([84656e5](https://github.com/D1g1talEntr0py/subscribr/commit/84656e5491fd7967179ada9ced5c5a0e8525803a))
+
 ## [4.1.1](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.0...v4.1.1) (2026-02-21)
 
 
