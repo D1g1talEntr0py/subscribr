@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.5](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.4...v4.1.5) (2026-02-21)
+
+
+### Bug Fixes
+
+* revert block that removed the _authToken in the release action ([e5ae093](https://github.com/D1g1talEntr0py/subscribr/commit/e5ae093ee60bcb9081b3668da118d00f96fdb84a))
+
 ## [4.1.4](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.3...v4.1.4) (2026-02-21)
 
 
