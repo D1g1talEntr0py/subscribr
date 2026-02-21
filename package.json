@@ -1,6 +1,6 @@
 {
 	"name": "@d1g1tal/subscribr",
-	"version": "4.0.4",
+	"version": "4.1.0",
 	"description": "JavaScript Publish/Subscribe Library",
 	"author": "Jason DiMeo",
 	"license": "ISC",
