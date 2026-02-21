@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.1](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.0...v4.1.1) (2026-02-21)
+
+
+### Bug Fixes
+
+* add packageManager field for pnpm/action-setup ([ccbff83](https://github.com/D1g1talEntr0py/subscribr/commit/ccbff8318dceceb1b56afce35c8d87da0ed6d787))
+* use --noEmit for type-check script ([10076e5](https://github.com/D1g1talEntr0py/subscribr/commit/10076e5471b08b0f355e199df8e2b0b135892b32))
+
 ## [4.1.0](https://github.com/D1g1talEntr0py/subscribr/compare/v4.0.4...v4.1.0) (2026-02-21)
 
 
