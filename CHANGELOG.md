@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.3](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.2...v4.1.3) (2026-02-21)
+
+
+### Bug Fixes
+
+* remove _authToken placeholder so npm uses OIDC exchange\n\nsetup-node writes _authToken=\${NODE_AUTH_TOKEN} to .npmrc. With no\nNODE_AUTH_TOKEN set, npm sends invalid auth instead of falling through\nto the Trusted Publisher OIDC exchange. Deleting it lets npm detect\nACTIONS_ID_TOKEN_REQUEST_URL and obtain a fresh token automatically. ([8de61a3](https://github.com/D1g1talEntr0py/subscribr/commit/8de61a3ea5550470eb93f57812522c1696b16df5))
+
 ## [4.1.2](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.1...v4.1.2) (2026-02-21)
 
 
