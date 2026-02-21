@@ -1,14 +1,21 @@
 import { SetMultiMap } from '@d1g1tal/collections/src';
 import { ContextEventHandler } from './context-event-handler';
 import { Subscription } from './subscription';
-import type { ContextEventListener } from './@types';
+import type { EventHandler, ErrorHandler, SubscriptionOptions } from './@types';
 
 /** A class that allows objects to subscribe to events and be notified when the event is published. */
 export class Subscribr {
-	private readonly subscribers: SetMultiMap<string, ContextEventHandler>;
+	private readonly subscribers: SetMultiMap<string, ContextEventHandler> = new SetMultiMap();
+	private errorHandler?: ErrorHandler;
 
-	constructor() {
-		this.subscribers = new SetMultiMap();
+	/**
+	 * Set a custom error handler for handling errors that occur in event listeners.
+	 * If not set, errors will be logged to the console.
+	 *
+	 * @param errorHandler The error handler function to call when an error occurs in an event listener.
+	 */
+	setErrorHandler(errorHandler: ErrorHandler): void {
+		this.errorHandler = errorHandler;
 	}
 
 	/**
@@ -17,13 +24,27 @@ export class Subscribr {
 	 * @param eventName The event name to subscribe to.
 	 * @param eventHandler The event handler to call when the event is published.
 	 * @param context The context to bind to the event handler.
+	 * @param options Subscription options.
 	 * @returns An object used to check if the subscription still exists and to unsubscribe from the event.
 	 */
-	subscribe(eventName: string, eventHandler: ContextEventListener, context: unknown = eventHandler): Subscription {
+	subscribe(eventName: string, eventHandler: EventHandler, context: unknown = eventHandler, options?: SubscriptionOptions): Subscription {
+		this.validateEventName(eventName);
+
+		// If once option is set, wrap the handler to auto-unsubscribe
+		if (options?.once) {
+			const originalHandler = eventHandler;
+			eventHandler = (event: Event, data?: unknown) => {
+				originalHandler.call(context, event, data);
+				this.unsubscribe(subscription);
+			};
+		}
+
 		const contextEventHandler = new ContextEventHandler(context, eventHandler);
 		this.subscribers.set(eventName, contextEventHandler);
 
-		return new Subscription(eventName, contextEventHandler);
+		const subscription = new Subscription(eventName, contextEventHandler);
+
+		return subscription;
 	}
 
 	/**
@@ -50,7 +71,18 @@ export class Subscribr {
 	 * @param data The value to be passed to the event handler as a parameter.
 	 */
 	publish<T>(eventName: string, event: Event = new CustomEvent(eventName), data?: T): void {
-		this.subscribers.get(eventName)?.forEach((contextEventHandler: ContextEventHandler) => contextEventHandler.handle(event, data));
+		this.validateEventName(eventName);
+		this.subscribers.get(eventName)?.forEach((contextEventHandler: ContextEventHandler) => {
+			try {
+				contextEventHandler.handle(event, data);
+			} catch (error) {
+				if (this.errorHandler) {
+					this.errorHandler(error as Error, eventName, event, data);
+				} else {
+					console.error(`Error in event handler for '${eventName}':`, error);
+				}
+			}
+		});
 	}
 
 	/**
@@ -61,6 +93,30 @@ export class Subscribr {
 	 */
 	isSubscribed({ eventName, contextEventHandler }: Subscription): boolean {
 		return this.subscribers.get(eventName)?.has(contextEventHandler) ?? false;
+	}
+
+	/**
+	 * Validate the event name
+	 *
+	 * @param eventName The event name to validate.
+	 * @throws {TypeError} If the event name is not a non-empty string.
+	 * @throws {Error} If the event name has leading or trailing whitespace.
+	 */
+	private validateEventName(eventName: string): void {
+		if (!eventName || typeof eventName !== 'string') {
+			throw new TypeError('Event name must be a non-empty string');
+		}
+
+		if (eventName.trim() !== eventName) {
+			throw new Error('Event name cannot have leading or trailing whitespace');
+		}
+	}
+
+	/**
+	 * Clears all subscriptions. The instance should not be used after calling this method.
+	 */
+	destroy(): void {
+		this.subscribers.clear();
 	}
 
 	/**
