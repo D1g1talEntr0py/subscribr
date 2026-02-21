@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.4](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.3...v4.1.4) (2026-02-21)
+
+
+### Bug Fixes
+
+* update node version in release action ([4f3efe1](https://github.com/D1g1talEntr0py/subscribr/commit/4f3efe1683618f5ec70712ce0baa69ec387c8772))
+
 ## [4.1.3](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.2...v4.1.3) (2026-02-21)
 
 
