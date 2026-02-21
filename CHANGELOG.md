@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.6](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.5...v4.1.6) (2026-02-21)
+
+
+### Bug Fixes
+
+* add .npmrc for scope registry and remove setup-node registry-url\n\nCommitting .npmrc with the scope→registry mapping ensures no auth token\nplaceholder is injected by setup-node. Removing registry-url from\nsetup-node prevents it from writing _authToken=\${NODE_AUTH_TOKEN} to\na project-level .npmrc, which was blocking the OIDC Trusted Publisher\nexchange. ([fb2ddeb](https://github.com/D1g1talEntr0py/subscribr/commit/fb2ddeb991196ee8ba27136d7683e3241da36c75))
+
 ## [4.1.5](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.4...v4.1.5) (2026-02-21)
 
 
