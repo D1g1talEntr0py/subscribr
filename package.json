@@ -36,7 +36,7 @@
 		"build": "tsbuild",
 		"build:minify": "tsbuild --minify --force",
 		"build:watch": "tsbuild --watch",
-		"type-check": "tsbuild --typeCheck",
+		"type-check": "tsbuild --noEmit",
 		"lint": "eslint ./src",
 		"test": "vitest run",
 		"test:coverage": "vitest run --coverage",
