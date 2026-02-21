@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.7](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.6...v4.1.7) (2026-02-21)
+
+
+### Bug Fixes
+
+* rename release.yml to publish.yml to match npm Trusted Publisher config\n\nThe OIDC token includes the workflow filename. npm validates it against\nthe registered Trusted Publisher, which was configured with the default\n'publish.yml'. The mismatch caused all auth rejections. ([e1fd070](https://github.com/D1g1talEntr0py/subscribr/commit/e1fd07032186d501fc334b31a9f316dbfec3c5ed))
+
 ## [4.1.6](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.5...v4.1.6) (2026-02-21)
 
 
