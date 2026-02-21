@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.8](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.7...v4.1.8) (2026-02-21)
+
+
+### Bug Fixes
+
+* correct permissions in publish workflow\n\n- Add explicit permissions to release-please job (contents: write,\n  pull-requests: write) — previously inherited defaults which may\n  not allow creating releases and PRs\n- Remove packages: write from publish job (GitHub Packages, not npm)\n- Restore contents: write on publish job ([5d8a3c7](https://github.com/D1g1talEntr0py/subscribr/commit/5d8a3c74abc4986c8e6b5a208826e301857fb2d5))
+
 ## [4.1.7](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.6...v4.1.7) (2026-02-21)
 
 
