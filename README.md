@@ -39,14 +39,14 @@ yarn add @d1g1tal/subscribr
 ```html
 <!-- Load as ES Module from CDN -->
 <script type="module">
-  import Subscribr from 'https://cdn.jsdelivr.net/npm/@d1g1tal/subscribr@4/dist/subscribr.js';
+  import { Subscribr } from 'https://cdn.jsdelivr.net/npm/@d1g1tal/subscribr@4/dist/subscribr.js';
 </script>
 ```
 
 ## Quick Start
 
 ```javascript
-import Subscribr from '@d1g1tal/subscribr';
+import { Subscribr } from '@d1g1tal/subscribr';
 
 // Create a new instance
 const subscribr = new Subscribr();
@@ -161,13 +161,13 @@ subscribr.publish('custom-event', customEvent, { extra: 'data' });
 Unsubscribe from an event.
 
 **Parameters:**
-- `subscription` (Subscription) - The subscription object returned from `subscribe()` or `once()`
+- `subscription` (Subscription) - The subscription object returned from `subscribe()`
 
 **Returns:** `boolean` - `true` if successfully unsubscribed, `false` if subscription wasn't found
 
 ```javascript
 const subscription = subscribr.subscribe('my-event', handler);
-const result = subscribr.unsubscribe(subscription); // true
+const result = subscribr.unsubscribe(subscription);  // true
 const result2 = subscribr.unsubscribe(subscription); // false (already unsubscribed)
 ```
 
@@ -220,6 +220,21 @@ subscribr.subscribe('my-event', () => {
 subscribr.publish('my-event');
 // Output: Error in handler for 'my-event': Oops!
 // Output: This still runs!
+```
+
+---
+
+#### `destroy()`
+
+Clears all subscriptions. The instance should not be used after calling this method.
+
+**Returns:** `void`
+
+```javascript
+const subscribr = new Subscribr();
+subscribr.subscribe('my-event', handler);
+// ... later, when done with the instance
+subscribr.destroy();
 ```
 
 ---
@@ -332,7 +347,7 @@ subscribr.publish('app-ready', undefined, { config: { theme: 'light' } }); // Ig
 Full TypeScript support with strict typing:
 
 ```typescript
-import Subscribr from '@d1g1tal/subscribr';
+import { Subscribr } from '@d1g1tal/subscribr';
 
 interface UserData {
   userId: number;
