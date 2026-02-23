@@ -1,10 +1,12 @@
 # subscribr
 
+[![npm version](https://img.shields.io/npm/v/%40d1g1tal/subscribr?color=blue)](https://www.npmjs.com/package/@d1g1tal/subscribr)
+[![npm downloads](https://img.shields.io/npm/dm/%40d1g1tal/subscribr)](https://www.npmjs.com/package/@d1g1tal/subscribr)
 [![CI](https://github.com/D1g1talEntr0py/subscribr/actions/workflows/ci.yml/badge.svg)](https://github.com/D1g1talEntr0py/subscribr/actions/workflows/ci.yml)
 [![Codecov](https://codecov.io/gh/D1g1talEntr0py/subscribr/branch/main/graph/badge.svg)](https://codecov.io/gh/D1g1talEntr0py/subscribr)
-[![npm version](https://img.shields.io/npm/v/@d1g1tal/subscribr.svg)](https://www.npmjs.com/package/@d1g1tal/subscribr)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/node/v/%40d1g1tal/tsbuild)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 A lightweight TypeScript publish/subscribe library implementing the Observer pattern.
 

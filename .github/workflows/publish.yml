@@ -14,7 +14,6 @@ jobs:
 
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
 
     steps:
       - name: Run release-please
@@ -33,7 +32,6 @@ jobs:
 
     permissions:
       id-token: write
-      contents: write
 
     steps:
       - name: Checkout
@@ -46,18 +44,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-
-      - name: Upgrade npm
-        run: npm install -g npm@latest
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Test
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
 
       - name: Publish to npm
         run: npm publish --provenance
