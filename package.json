@@ -4,7 +4,7 @@
 	"packageManager": "pnpm@10.30.1",
 	"description": "JavaScript Publish/Subscribe Library",
 	"author": "Jason DiMeo",
-	"license": "ISC",
+	"license": "MIT",
 	"homepage": "https://github.com/D1g1talEntr0py/subscribr#readme",
 	"bugs": {
 		"url": "https://github.com/D1g1talEntr0py/subscribr/issues"
