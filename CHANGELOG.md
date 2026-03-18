@@ -1,3 +1,11 @@
+## [4.1.10](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.9...v4.1.10) (2026-03-18)
+
+### Bug Fixes
+
+* **deps:** security update for dependency (91254b120bef1a6d942196ac71eceafc0d66008a)
+* Updates collection import to point to package root (789fa272374714ac3fe620455c4b5f3e219cce9c)
+Removes the explicit '/src' path from the @d1g1tal/collections import to rely on the package's main export definition. This ensures better compatibility with modern bundlers and resolution configurations.
+
 ## [4.1.9](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.8...v4.1.9) (2026-03-18)
 
 ### Bug Fixes
