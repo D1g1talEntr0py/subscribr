@@ -1,4 +1,4 @@
-import { SetMultiMap } from '@d1g1tal/collections/src';
+import { SetMultiMap } from '@d1g1tal/collections';
 import { ContextEventHandler } from './context-event-handler';
 import { Subscription } from './subscription';
 import type { EventHandler, ErrorHandler, SubscriptionOptions } from './@types';
