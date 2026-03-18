@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@d1g1tal/collections':
-        specifier: ^2.1.2
-        version: 2.1.2(typescript@5.9.3)
+        specifier: ^2.1.4
+        version: 2.1.4
     devDependencies:
       '@d1g1tal/tsbuild':
         specifier: 1.6.1
@@ -75,19 +75,17 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@d1g1tal/collections@2.1.2':
-    resolution: {integrity: sha512-tR5ESI8CevPFmPpnxoOy04OAMZRtXAjFgkA2ZMG2eWahKf/IVyrEUg4PVpgAZ9KY0+onulU6ZL06krU1Bo5AGA==}
+  '@d1g1tal/collections@2.1.4':
+    resolution: {integrity: sha512-uX8lXIzYEK4350EPr12i3sU5dSHKlG531NjeDx1qSETVUy8AacloiaLOgw/1I+h6ejehpUvoKRygqh06tECtbA==}
     engines: {node: '>=20.16.0'}
-    peerDependencies:
-      typescript: ^5.5.2
 
   '@d1g1tal/tsbuild@1.6.1':
     resolution: {integrity: sha512-n1WADKCXjyVjZrCGAr33BF6KHMl4GYgbdDQ8WB/Sk2icjDrJBjAwF5Ht646BNk/RRjjNUNrOt1rE9bBGMdtbmQ==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
-  '@d1g1tal/watchr@1.0.3':
-    resolution: {integrity: sha512-LjYp+evdMH1s2SJOn4s+7HMG7uy51pXk6mHpaIPN5RfsctNFXlhq0/JSGOmrddLsEbFUho3QGuZQXl33SRXA3g==}
+  '@d1g1tal/watchr@1.0.4':
+    resolution: {integrity: sha512-0AVBh9OGtUsBOdiZXsWgYcLHnO/+LuFt3f7GZd1uhJeNPOBGRp+TSdik6z1IxXWsSY9vUbpiHa+rorBNxNu2Mg==}
     engines: {node: '>=22.0.0'}
 
   '@es-joy/jsdoccomment@0.84.0':
@@ -1174,19 +1172,15 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@d1g1tal/collections@2.1.2(typescript@5.9.3)':
-    dependencies:
-      typescript: 5.9.3
-    optionalDependencies:
-      tsx: 4.21.0
+  '@d1g1tal/collections@2.1.4': {}
 
   '@d1g1tal/tsbuild@1.6.1':
     dependencies:
-      '@d1g1tal/watchr': 1.0.3
+      '@d1g1tal/watchr': 1.0.4
       esbuild: 0.27.4
       magic-string: 0.30.21
 
-  '@d1g1tal/watchr@1.0.3': {}
+  '@d1g1tal/watchr@1.0.4': {}
 
   '@es-joy/jsdoccomment@0.84.0':
     dependencies:

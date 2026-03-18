@@ -12,15 +12,15 @@
 	"bugs": {
 		"url": "https://github.com/D1g1talEntr0py/subscribr/issues"
 	},
-  "maintainers": [
-    {
-      "name": "D1g1talEntr0py",
-      "email": "jason.dimeo@gmail.com"
-    }
-  ],
-  "engines": {
-    "node": ">=20.15.1"
-  },
+	"maintainers": [
+		{
+			"name": "D1g1talEntr0py",
+			"email": "jason.dimeo@gmail.com"
+		}
+	],
+	"engines": {
+		"node": ">=20.15.1"
+	},
 	"packageManager": "pnpm@10.32.1",
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
@@ -50,7 +50,7 @@
 		"test:watch": "vitest"
 	},
 	"dependencies": {
-		"@d1g1tal/collections": "^2.1.2"
+		"@d1g1tal/collections": "^2.1.4"
 	},
 	"devDependencies": {
 		"@d1g1tal/tsbuild": "1.6.1",
