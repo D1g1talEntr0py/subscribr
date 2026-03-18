@@ -1,20 +1,29 @@
 {
 	"name": "@d1g1tal/subscribr",
+	"author": "D1g1talEntr0py",
 	"version": "4.1.9",
-	"packageManager": "pnpm@10.30.1",
-	"description": "JavaScript Publish/Subscribe Library",
-	"author": "Jason DiMeo",
 	"license": "MIT",
+	"description": "JavaScript Publish/Subscribe Library",
 	"homepage": "https://github.com/D1g1talEntr0py/subscribr#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/D1g1talEntr0py/subscribr.git"
+	},
 	"bugs": {
 		"url": "https://github.com/D1g1talEntr0py/subscribr/issues"
 	},
-	"keywords": [
-		"JavaScript",
-		"ObserverPattern",
-		"Publish/Subscribe"
-	],
+  "maintainers": [
+    {
+      "name": "D1g1talEntr0py",
+      "email": "jason.dimeo@gmail.com"
+    }
+  ],
+  "engines": {
+    "node": ">=20.15.1"
+  },
+	"packageManager": "pnpm@10.32.1",
 	"publishConfig": {
+		"registry": "https://registry.npmjs.org",
 		"access": "public"
 	},
 	"type": "module",
@@ -22,15 +31,13 @@
 		".": {
 			"types": "./dist/subscribr.d.ts",
 			"import": "./dist/subscribr.js"
-		},
-		"./src": {
-			"types": "./dist/subscribr.d.ts",
-			"import": "./src/index.ts"
 		}
 	},
 	"files": [
-		"/src",
-		"/dist"
+		"/dist",
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE"
 	],
 	"scripts": {
 		"build": "tsbuild",
@@ -41,10 +48,6 @@
 		"test": "vitest run",
 		"test:coverage": "vitest run --coverage",
 		"test:watch": "vitest"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/D1g1talEntr0py/subscribr.git"
 	},
 	"dependencies": {
 		"@d1g1tal/collections": "^2.1.2"
@@ -67,5 +70,10 @@
 	"browserslist": [
 		"defaults and fully supports es6-module",
 		"node >= 20.15.1"
+	],
+	"keywords": [
+		"JavaScript",
+		"ObserverPattern",
+		"Publish/Subscribe"
 	]
 }
