@@ -50,10 +50,10 @@
 		"test:watch": "vitest"
 	},
 	"dependencies": {
-		"@d1g1tal/collections": "^2.1.4"
+		"@d1g1tal/collections": "^2.1.6"
 	},
 	"devDependencies": {
-		"@d1g1tal/tsbuild": "1.6.1",
+		"@d1g1tal/tsbuild": "1.6.3",
 		"@eslint/compat": "^2.0.3",
 		"@eslint/js": "^10.0.1",
 		"@types/node": "^25.5.0",
