@@ -1,3 +1,10 @@
+## [4.1.9](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.8...v4.1.9) (2026-03-18)
+
+### Bug Fixes
+
+* **deps:** update dependencies to address CVE-2026-27903 and CVE-2026-27904 (e62f5d4b4a142a561b1da64b8479ad6bf82414f4)
+Upgrades several development dependencies including ESLint, Vitest, and TypeScript to their latest patch or minor versions. This directly incorporates security patches for CVE-2026-27903 and CVE-2026-27904 to ensure the build pipeline remains secure.
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
