@@ -4,9 +4,9 @@
 	],
 	"json.schemas": [
 		{
-			"url": "./node_modules/tsbuild/schema.json",
+			"url": "./node_modules/@d1g1tal/tsbuild/schema.json",
 			"fileMatch": [ "tsconfig.json" ]
 		}
 	],
-	"typescript.tsdk": "node_modules/typescript/lib"
+	"js/ts.tsdk.path": "node_modules/typescript/lib"
 }
