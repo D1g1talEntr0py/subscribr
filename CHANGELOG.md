@@ -1,3 +1,10 @@
+## [4.1.11](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.10...v4.1.11) (2026-04-04)
+
+### Bug Fixes
+
+* **deps:** update @d1g1tal/collections to ^2.2.0 (281692b97ec5d569fd9be8741cc9d216cb16042d)
+Updates the runtime dependency to the latest minor version to ensure compatibility with newer collections features. This addresses potential underlying engine changes and is intended to trigger a patch release.
+
 ## [4.1.10](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.9...v4.1.10) (2026-03-18)
 
 ### Bug Fixes
