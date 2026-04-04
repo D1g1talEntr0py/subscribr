@@ -6,7 +6,7 @@
 [![Codecov](https://codecov.io/gh/D1g1talEntr0py/subscribr/branch/main/graph/badge.svg)](https://codecov.io/gh/D1g1talEntr0py/subscribr)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/node/v/@d1g1tal/subscribr)](https://nodejs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript->=3.3.3-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 A lightweight TypeScript publish/subscribe library implementing the Observer pattern.
 
