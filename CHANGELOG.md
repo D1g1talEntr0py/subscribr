@@ -1,3 +1,10 @@
+## [4.1.12](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.11...v4.1.12) (2026-04-07)
+
+### Bug Fixes
+
+* **deps:** update devDependencies to address Vite vulnerability in Vitest (f51330c52797d222e6697214b77a51d569473451)
+Updates `@d1g1tal/tsbuild`, `@vitest/coverage-v8`, and `vitest` to their latest versions to resolve a security vulnerability (CVE-2026-39363) in the transitive dependency Vite. Ensures development dependencies align with security requirements.
+
 ## [4.1.11](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.10...v4.1.11) (2026-04-04)
 
 ### Bug Fixes
