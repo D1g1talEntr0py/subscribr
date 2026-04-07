@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@d1g1tal/collections':
-        specifier: ^2.2.0
-        version: 2.2.0
+        specifier: ^2.2.1
+        version: 2.2.1
     devDependencies:
       '@d1g1tal/tsbuild':
         specifier: 1.7.5
@@ -75,8 +75,8 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@d1g1tal/collections@2.2.0':
-    resolution: {integrity: sha512-RGB1ql8TTDmoGWWpxoO0lNVvZSbfGchTbbF6A3Rg+y5qiEzjMBVp33hSC91l3qsHnKFf0KF4YBggn27eyrZTwQ==}
+  '@d1g1tal/collections@2.2.1':
+    resolution: {integrity: sha512-bKWg8X857uHAWrULUA0veq3a8ibscoMFUlAGNnTwkqdVFtZLtS3FAtNjSgoyyal0iaa+vawxknYZRaOzsBrhUg==}
     engines: {node: '>=20.16.0'}
 
   '@d1g1tal/tsbuild@1.7.5':
@@ -1234,7 +1234,7 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@d1g1tal/collections@2.2.0': {}
+  '@d1g1tal/collections@2.2.1': {}
 
   '@d1g1tal/tsbuild@1.7.5(typescript@6.0.2)':
     dependencies:
