@@ -1,3 +1,9 @@
+## [4.1.13](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.12...v4.1.13) (2026-04-07)
+
+### Bug Fixes
+
+* **deps:** reinstall project to finally address CVE-2026-39363 (6447f905caeda8b9c55d7e74833adb107a344d7a)
+
 ## [4.1.12](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.11...v4.1.12) (2026-04-07)
 
 ### Bug Fixes
