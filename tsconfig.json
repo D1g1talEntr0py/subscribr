@@ -15,5 +15,6 @@
 		"types": [ "node" ],
 		"module": "preserve",
 	},
-	"include": [ "./src" ]
+	"include": [ "./src" ],
+	"tsbuild": { "iife": true }
 }
