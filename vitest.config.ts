@@ -18,16 +18,3 @@ export default defineConfig({
 		}
 	}
 });
-
-// export default defineConfig({
-// 	test: {
-// 		typecheck: { enabled: false },
-// 		coverage: { reporter: [ 'lcov', 'json', 'text' ], reportsDirectory: 'tests/coverage', include: [ 'src' ], exclude: [ 'src/index.ts', 'src/@types' ] }
-// 	},
-// 	resolve: {
-// 		alias: [
-// 			{ find: /^@d1g1tal\/collections$/, replacement: fileURLToPath(new URL('./node_modules/@d1g1tal/collections/dist/set-multi-map.js', import.meta.url)) },
-// 			{ find: '@/', replacement: fileURLToPath(new URL('./', import.meta.url)) }
-// 		]
-// 	}
-// });
