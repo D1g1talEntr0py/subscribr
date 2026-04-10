@@ -1,3 +1,10 @@
+## [4.2.0](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.13...v4.2.0) (2026-04-10)
+
+### Features
+
+* **build:** iife versions of the modules are built alongside the ESM modules (c68b3f2f9adf6bce1c283ddce1210f7037328726)
+Enables IIFE generation in the tsbuild configuration within tsconfig.json to support immediate invocation module patterns.
+
 ## [4.1.13](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.12...v4.1.13) (2026-04-07)
 
 ### Bug Fixes
