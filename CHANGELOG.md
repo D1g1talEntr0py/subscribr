@@ -1,3 +1,12 @@
+## [4.2.1](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.0...v4.2.1) (2026-05-25)
+
+### Code Refactoring
+
+* Migrates to native ES private fields (8d7bbd70e187c4f1cafd57c30a587f2d2a2aa050)
+Transitions internal class state to use ECMAScript native private fields instead of TypeScript's private modifier.
+Enhances encapsulation and aligns with modern standard ECMAScript features.
+Includes a defensive check to prevent errors when removing non-existent subscriptions.
+
 ## [4.2.0](https://github.com/D1g1talEntr0py/subscribr/compare/v4.1.13...v4.2.0) (2026-04-10)
 
 ### Features
