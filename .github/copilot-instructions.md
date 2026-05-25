@@ -92,7 +92,7 @@ expect(eventListener).toHaveBeenCalledWith(event, data);
 - **`@d1g1tal/collections`**: Provides `SetMultiMap` extending native `Map<K, Set<V>>` for storing multiple unique values per key. Import from `/src` path in source files (`@d1g1tal/collections/src`).
   - Key methods: `set(key, value)` adds to Set, `get(key)` returns Set or undefined, `deleteValue(key, value)` removes specific value
   - Auto-cleanup: When last value deleted, key is removed from map (same pattern used in `Subscribr.unsubscribe()`)
-- Target environments: Modern browsers with ES6 module support + Node.js ≥20.15.1
+- Target environments: Modern browsers with ES6 module support + Node.js >=22
 
 ### Module System & Package Exports
 Pure ESM package (`"type": "module"`). Exports two entry points:

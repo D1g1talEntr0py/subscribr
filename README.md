@@ -432,7 +432,7 @@ subscribr.subscribe('data_update', handler);
 
 ## Browser Support
 
-Supports all modern browsers with ES6 module support and Node.js ≥ 20.15.1
+Supports all modern browsers with ES6 module support and Node.js >= 22
 
 ## License
 
