@@ -2,16 +2,16 @@ import type { ContextEventHandler } from './context-event-handler';
 
 /** Represents a subscription to an event. */
 export class Subscription {
-	private readonly _eventName: string;
-	private readonly _contextEventHandler: ContextEventHandler;
+	readonly #eventName: string;
+	readonly #contextEventHandler: ContextEventHandler;
 
 	/**
 	 * @param eventName The event name.
 	 * @param contextEventHandler The context event handler.
 	 */
 	constructor(eventName: string, contextEventHandler: ContextEventHandler) {
-		this._eventName = eventName;
-		this._contextEventHandler = contextEventHandler;
+		this.#eventName = eventName;
+		this.#contextEventHandler = contextEventHandler;
 	}
 
 	/**
@@ -20,7 +20,7 @@ export class Subscription {
 	 * @returns The event name.
 	 */
 	get eventName(): string {
-		return this._eventName;
+		return this.#eventName;
 	}
 
 	/**
@@ -29,7 +29,7 @@ export class Subscription {
 	 * @returns The context event handler
 	 */
 	get contextEventHandler(): ContextEventHandler {
-		return this._contextEventHandler;
+		return this.#contextEventHandler;
 	}
 
 	/**
