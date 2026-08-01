@@ -1,3 +1,12 @@
+## [4.2.2](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.1...v4.2.2) (2026-08-01)
+* merge issues (256a82f9a9728cd00e324370079b9ff0efed6ec5)
+* replace private fields with class fields in ContextEventHandler, Subscribr, and Subscription (96de969e65b0b0abb8873e46694630ece0eb7ef0)
+* **config:** add ESLint configuration file with recommended settings (3705e816c3d4fa7b817dfd9e5918402d430c72f1)
+* update pnpm workspace configuration and tsconfig schema (0f024eaff3f9adf259532e778b3ec834100cbfd4)
+- Removed unnecessary allowBuilds entries in pnpm-workspace.yaml
+- Added minimumReleaseAgeExclude for specific package versions
+- Added schema reference for tsconfig.json and removed stableTypeOrdering option
+
 ## [4.2.1](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.0...v4.2.1) (2026-05-25)
 
 ### Code Refactoring
