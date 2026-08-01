@@ -5,8 +5,8 @@ import type { EventHandler, ErrorHandler, SubscriptionOptions } from './@types';
 
 /** A class that allows objects to subscribe to events and be notified when the event is published. */
 export class Subscribr {
-	readonly #subscribers: SetMultiMap<string, ContextEventHandler> = new SetMultiMap();
 	#errorHandler?: ErrorHandler;
+	readonly #subscribers: SetMultiMap<string, ContextEventHandler> = new SetMultiMap();
 
 	/**
 	 * Set a custom error handler for handling errors that occur in event listeners.
@@ -15,6 +15,7 @@ export class Subscribr {
 	 * @param errorHandler The error handler function to call when an error occurs in an event listener.
 	 */
 	setErrorHandler(errorHandler: ErrorHandler): void {
+		this.#errorHandler = errorHandler;
 		this.#errorHandler = errorHandler;
 	}
 
@@ -41,6 +42,7 @@ export class Subscribr {
 
 		const contextEventHandler = new ContextEventHandler(context, eventHandler);
 		this.#subscribers.set(eventName, contextEventHandler);
+		this.#subscribers.set(eventName, contextEventHandler);
 
 		const subscription = new Subscription(eventName, contextEventHandler);
 
@@ -54,14 +56,10 @@ export class Subscribr {
 	 * @returns true if eventListener has been removed successfully. false if the value is not found or if the value is not an object.
 	 */
 	unsubscribe({ eventName, contextEventHandler }: Subscription): boolean {
-		const contextEventHandlers = this.#subscribers.get(eventName);
-
-		if (!contextEventHandlers) {
-			return false;
-		}
-
+		const contextEventHandlers = this.#subscribers.get(eventName) ?? new Set();
 		const removed = contextEventHandlers.delete(contextEventHandler);
 
+		if (removed && contextEventHandlers.size === 0) {	this.#subscribers.delete(eventName) }
 		if (removed && contextEventHandlers.size === 0) {	this.#subscribers.delete(eventName) }
 
 		return removed;
@@ -76,11 +74,13 @@ export class Subscribr {
 	 * @param data The value to be passed to the event handler as a parameter.
 	 */
 	publish<T>(eventName: string, event: Event = new CustomEvent(eventName), data?: T): void {
-		this.#validateEventName(eventName);
+		this.validateEventName(eventName);
 		this.#subscribers.get(eventName)?.forEach((contextEventHandler: ContextEventHandler) => {
 			try {
 				contextEventHandler.handle(event, data);
 			} catch (error) {
+				if (this.#errorHandler) {
+					this.#errorHandler(error as Error, eventName, event, data);
 				if (this.#errorHandler) {
 					this.#errorHandler(error as Error, eventName, event, data);
 				} else {
@@ -97,6 +97,7 @@ export class Subscribr {
 	 * @returns true if the event name and handler are subscribed, false otherwise.
 	 */
 	isSubscribed({ eventName, contextEventHandler }: Subscription): boolean {
+		return this.#subscribers.get(eventName)?.has(contextEventHandler) ?? false;
 		return this.#subscribers.get(eventName)?.has(contextEventHandler) ?? false;
 	}
 
@@ -121,6 +122,7 @@ export class Subscribr {
 	 * Clears all subscriptions. The instance should not be used after calling this method.
 	 */
 	destroy(): void {
+		this.#subscribers.clear();
 		this.#subscribers.clear();
 	}
 
