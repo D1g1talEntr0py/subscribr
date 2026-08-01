@@ -1,12 +1,3 @@
 {
-  "cSpell.words": [
-		"Subscribr"
-	],
-	"json.schemas": [
-		{
-			"url": "./node_modules/@d1g1tal/tsbuild/schema.json",
-			"fileMatch": [ "tsconfig.json" ]
-		}
-	],
 	"js/ts.tsdk.path": "node_modules/typescript/lib"
 }

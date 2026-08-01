@@ -1,2 +1,5 @@
 allowBuilds:
   esbuild: true
+minimumReleaseAgeExclude:
+  - '@d1g1tal/collections@2.2.4'
+  - '@d1g1tal/tsbuild@2.2.3 || 2.2.4'
