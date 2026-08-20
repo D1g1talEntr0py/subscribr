@@ -21,7 +21,7 @@
 	"engines": {
 		"node": ">=22.22.0"
 	},
-	"packageManager": "pnpm@11.19.0",
+	"packageManager": "pnpm@11.22.0",
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
 		"access": "public"
@@ -51,27 +51,25 @@
 		"test:watch": "vitest"
 	},
 	"dependencies": {
-		"@d1g1tal/collections": "^2.2.4"
+		"@d1g1tal/collections": "^3.1.1"
 	},
 	"devDependencies": {
-		"@d1g1tal/tsbuild": "^2.2.4",
+		"@d1g1tal/tsbuild": "^2.3.1",
 		"@eslint/compat": "^2.1.0",
 		"@eslint/js": "^10.0.1",
-		"@types/node": "^26.1.2",
-		"@typescript-eslint/eslint-plugin": "^8.65.0",
-		"@typescript-eslint/parser": "^8.65.0",
+		"@types/node": "^26.2.0",
 		"@typescript/native": "npm:typescript@^7.0.2",
-		"@vitest/coverage-v8": "^4.1.10",
-		"eslint": "^10.8.0",
+		"@vitest/coverage-v8": "^4.1.11",
+		"eslint": "^10.8.1",
 		"eslint-plugin-compat": "^7.0.2",
-		"eslint-plugin-jsdoc": "^63.3.2",
+		"eslint-plugin-jsdoc": "^64.2.1",
 		"typescript": "npm:@typescript/typescript6@^6.0.2",
-		"typescript-eslint": "^8.65.0",
-		"vitest": "^4.1.10"
+		"typescript-eslint": "^8.67.0",
+		"vitest": "^4.1.11"
 	},
 	"browserslist": [
-		"defaults and fully supports es6-module",
-		"node >= 22.22.0"
+		"defaults and fully supports es6",
+		"maintained node versions"
 	],
 	"keywords": [
 		"JavaScript",
