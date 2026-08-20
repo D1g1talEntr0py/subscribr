@@ -2,32 +2,14 @@
   "branches": ["main"],
   "plugins": [
     ["@semantic-release/commit-analyzer", {
-      "preset": "conventionalcommits",
+      "preset": "angular",
       "releaseRules": [
         { "breaking": true, "release": "major" },
         { "type": "refactor", "release": "patch" }
       ]
     }],
     ["@semantic-release/release-notes-generator", {
-      "preset": "conventionalcommits",
-      "presetConfig": {
-        "types": [
-          { "type": "feat", "section": "Features" },
-          { "type": "fix", "section": "Bug Fixes" },
-          { "type": "perf", "section": "Performance Improvements" },
-          { "type": "revert", "section": "Reverts" },
-          { "type": "refactor", "section": "Code Refactoring" },
-          { "type": "docs", "section": "Documentation", "hidden": true },
-          { "type": "style", "section": "Styles", "hidden": true },
-          { "type": "chore", "section": "Miscellaneous Chores", "hidden": true },
-          { "type": "test", "section": "Tests", "hidden": true },
-          { "type": "build", "section": "Build System", "hidden": true },
-          { "type": "ci", "section": "Continuous Integration", "hidden": true }
-        ]
-      },
-      "writerOpts": {
-        "commitPartial": "* {{#if scope}}**{{scope}}:** {{/if}}{{subject}} ({{hash}})\n{{#if body}}\n{{body}}\n\n{{/if}}"
-      }
+      "preset": "angular"
     }],
     "@semantic-release/changelog",
     ["@semantic-release/npm", { "npmPublish": false }],
@@ -40,7 +22,7 @@
       "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
     }],
     ["@semantic-release/github", {
-      "assets": [{ "path": "d1g1tal-subscribr-*.tgz" }]
+      "assets": [{ "path": "subscribr-*.tgz" }]
     }]
   ]
 }
