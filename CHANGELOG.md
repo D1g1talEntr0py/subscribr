@@ -1,3 +1,10 @@
+## [4.2.4](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.3...v4.2.4) (2026-08-20)
+
+
+### Bug Fixes
+
+* **release:** restore correct asset name for GitHub release ([5fb04dc](https://github.com/D1g1talEntr0py/subscribr/commit/5fb04dc8fb6f3da183c343c843946df91c3afeba))
+
 ## [4.2.3](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.2...v4.2.3) (2026-08-20)
 
 
