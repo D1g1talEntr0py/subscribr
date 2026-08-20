@@ -1,3 +1,11 @@
+## [4.2.3](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.2...v4.2.3) (2026-08-20)
+
+
+### Bug Fixes
+
+* **deps:** upgrade @d1g1tal/collections to v3 and dev tooling ([4d37568](https://github.com/D1g1talEntr0py/subscribr/commit/4d37568c8d4f6028f389ca81400f0ce3deb2eb0d))
+* **release:** restore angular preset so changelog headings render ([1bbd184](https://github.com/D1g1talEntr0py/subscribr/commit/1bbd184843ea14b162ed2861a1863e677ff7aadf))
+
 ## [4.2.2](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.1...v4.2.2) (2026-08-01)
 * merge issues (256a82f9a9728cd00e324370079b9ff0efed6ec5)
 * replace private fields with class fields in ContextEventHandler, Subscribr, and Subscription (96de969e65b0b0abb8873e46694630ece0eb7ef0)
