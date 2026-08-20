@@ -93,6 +93,25 @@ describe('isSubscribed', () => {
 	test('Is Not Subscribed', () => expect(subscribr.isSubscribed(secondSubscription)).toEqual(false));
 });
 
+describe('Destroy', () => {
+	test('removes all subscriptions and prevents future event delivery', () => {
+		const subscribr = new Subscribr();
+		const firstHandler = vi.fn();
+		const secondHandler = vi.fn();
+		const firstSubscription = subscribr.subscribe('firstEvent', firstHandler);
+		const secondSubscription = subscribr.subscribe('secondEvent', secondHandler);
+
+		subscribr.destroy();
+
+		expect(subscribr.isSubscribed(firstSubscription)).toBe(false);
+		expect(subscribr.isSubscribed(secondSubscription)).toBe(false);
+		subscribr.publish('firstEvent');
+		subscribr.publish('secondEvent');
+		expect(firstHandler).not.toHaveBeenCalled();
+		expect(secondHandler).not.toHaveBeenCalled();
+	});
+});
+
 describe('Event Name Validation', () => {
 	const subscribr = new Subscribr();
 
