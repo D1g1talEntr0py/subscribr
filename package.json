@@ -42,7 +42,7 @@
 	],
 	"scripts": {
 		"build": "tsbuild",
-		"build:minify": "tsbuild --minify --force",
+		"build:minify": "tsbuild --minify",
 		"build:watch": "tsbuild --watch",
 		"type-check": "tsbuild --noEmit",
 		"lint": "eslint --flag unstable_native_nodejs_ts_config ./src",
