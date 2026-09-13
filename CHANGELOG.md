@@ -1,3 +1,10 @@
+## [4.2.6](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.5...v4.2.6) (2026-09-13)
+
+
+### Bug Fixes
+
+* **ci:** update node version matrix to remove deprecated version 22 ([8ad87f2](https://github.com/D1g1talEntr0py/subscribr/commit/8ad87f2f6e2bb1b1e2eeb92859edca1f69cd0012))
+
 ## [4.2.5](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.4...v4.2.5) (2026-09-13)
 
 
