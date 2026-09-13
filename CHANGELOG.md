@@ -1,3 +1,10 @@
+## [4.2.5](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.4...v4.2.5) (2026-09-13)
+
+
+### Bug Fixes
+
+* **release:** remove silent flag from build command in release configuration ([da2fb7a](https://github.com/D1g1talEntr0py/subscribr/commit/da2fb7af32bf464971a61a670864e3b8976c25a9))
+
 ## [4.2.4](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.3...v4.2.4) (2026-08-20)
 
 
