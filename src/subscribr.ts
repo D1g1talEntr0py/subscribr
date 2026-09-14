@@ -131,3 +131,7 @@ export class Subscribr {
 		return 'Subscribr';
 	}
 }
+
+export { Subscription } from './subscription';
+export { ContextEventHandler } from './context-event-handler';
+export type { EventHandler } from './@types';
