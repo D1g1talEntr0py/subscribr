@@ -1,3 +1,11 @@
+## [4.2.7](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.6...v4.2.7) (2026-09-14)
+
+
+### Bug Fixes
+
+* **exports:** move exports to subscribr.ts for better organization ([bf041f5](https://github.com/D1g1talEntr0py/subscribr/commit/bf041f5f59d8de081c79fd6af684eaad5a056288))
+* **package:** update node engine requirement to >=24.11.0 ([a8d4c63](https://github.com/D1g1talEntr0py/subscribr/commit/a8d4c635aaffbe7d020fd6387b9818f0a2968686))
+
 ## [4.2.6](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.5...v4.2.6) (2026-09-13)
 
 
