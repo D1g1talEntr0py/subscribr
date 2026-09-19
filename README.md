@@ -434,6 +434,10 @@ subscribr.subscribe('data_update', handler);
 
 Supports all modern browsers with ES6 module support and Node.js >= 22
 
+## Development Environment
+
+Development and release tooling is supported on Unix-like environments only: Linux, macOS, or Windows via WSL. Native Windows shells are not a supported development target.
+
 ## License
 
 ISC
