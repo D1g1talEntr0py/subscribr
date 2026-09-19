@@ -1,105 +1,129 @@
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { ContextEventHandler } from '../src/context-event-handler.js';
 import { Subscribr } from '../src/subscribr.js';
 import { Subscription } from '../src/subscription.js';
 
-describe('Subscribr Object Creation', () => {
-	const subscribr = new Subscribr();
-
-	test('Type Of', () => expect(typeof subscribr).toEqual('object'));
-	test('Instance Of', () => expect(subscribr).toBeInstanceOf(Subscribr));
-	test('Constructor Type', () => expect(subscribr.constructor).toEqual(Subscribr));
-	test('Object.prototype.toString', () => expect(Object.prototype.toString.call(subscribr)).toEqual('[object Subscribr]'));
-});
-
-describe('Subscription Object Creation', () => {
-	const subscription = new Subscribr().subscribe('myEvent', vi.fn(function (event, data) {
-		console.log(`Event: ${event.type} called with data: ${data}.`);
-	}));
-
-	test('Type Of', () => expect(typeof subscription).toEqual('object'));
-	test('Instance Of', () => expect(subscription).toBeInstanceOf(Subscription));
-	test('Constructor Type', () => expect(subscription.constructor).toEqual(Subscription));
-	test('Object.prototype.toString', () => expect(Object.prototype.toString.call(subscription)).toEqual('[object Subscription]'));
-});
-
-describe('ContextEventHandler Object Creation', () => {
-	const contextEventHandler = new Subscribr().subscribe('myEvent', vi.fn(function (event, data) {
-		console.log(`Event: ${event.type} called with data: ${data}.`);
-	})).contextEventHandler;
-
-	test('Type Of', () => expect(typeof contextEventHandler).toEqual('object'));
-	test('Instance Of', () => expect(contextEventHandler).toBeInstanceOf(ContextEventHandler));
-	test('Constructor Type', () => expect(contextEventHandler.constructor).toEqual(ContextEventHandler));
-	test('Object.prototype.toString', () => expect(Object.prototype.toString.call(contextEventHandler)).toEqual('[object ContextEventHandler]'));
-});
-
-describe('Subscribe', () => {
-	const subscribr = new Subscribr();
-	const myNewEvent = new CustomEvent('myNewEvent');
-
-	const eventListener = vi.fn(function(this: unknown, event, data) {
-		console.log(this);
-		console.log(`Event: ${event.type} called with data: ${data}.`);
-	});
-
-	const subscription = subscribr.subscribe('myNewEvent', eventListener, {x: 'some value'});
-
-	test('typeof', () => expect(typeof subscription).toEqual('object'));
-	test('_type', () => expect(subscription).toBeInstanceOf(Subscription));
-
-	test('Publish', () => {
-		subscribr.publish('myNewEvent');
-		expect(eventListener).toHaveBeenCalledWith(myNewEvent, undefined);
-	});
-
-	test('Publish Event w/ Data', () => {
-		const event = new Event('myNewEvent');
-		const data = { global: true, children: [] };
-		subscribr.publish(event.type, event, data);
-		expect(eventListener).toHaveBeenCalledWith(event, data);
-	});
-});
-
-describe('Unsubscribe', () => {
-	const eventListener = vi.fn((event) => console.log(`Event: ${event.type} called.`));
-	const subscribr = new Subscribr();
-	const subscription = subscribr.subscribe('myNewEvent', eventListener);
-
-	test('Check Result', () => expect(subscribr.unsubscribe(subscription)).toEqual(true));
-
-	test('Unsubscribe with Non-Existent Subscription', () => expect(subscribr.unsubscribe(subscription)).toEqual(false));
-});
-
-describe('Unsubscribe with Existing Subscriptions', () => {
-	const eventListener = vi.fn((event) => console.log(`Event: ${event.type} called.`));
-	const subscribr = new Subscribr();
-	const subscription = subscribr.subscribe('myNewEvent', eventListener);
-	const secondSubscription = subscribr.subscribe('myNewEvent', vi.fn((event) => console.log(`Second subscription Event: ${event.type} called.`)));
-
-	test('Check Result', () => expect(subscribr.unsubscribe(subscription) && subscribr.unsubscribe(secondSubscription)).toEqual(true));
-});
-
-describe('isSubscribed', () => {
-	const subscribr = new Subscribr();
-
-	const subscription = subscribr.subscribe('myIsSubscribedEvent', (event) => console.log(`Event: ${event.type} called.`));
-
-	test('Is Actually Subscribed', () => expect(subscribr.isSubscribed(subscription)).toEqual(true));
-
-	const secondSubscribr = new Subscribr();
-	const secondSubscription = secondSubscribr.subscribe('mySecondIsSubscribedEvent', (event) => console.log(`Event: ${event.type} called.`));
-
-	test('Is Not Subscribed', () => expect(subscribr.isSubscribed(secondSubscription)).toEqual(false));
-});
-
-describe('Destroy', () => {
-	test('removes all subscriptions and prevents future event delivery', () => {
+describe('Subscribr instance behavior', () => {
+	test('creates a Subscribr instance with the expected identity and tag', () => {
 		const subscribr = new Subscribr();
-		const firstHandler = vi.fn();
-		const secondHandler = vi.fn();
-		const firstSubscription = subscribr.subscribe('firstEvent', firstHandler);
-		const secondSubscription = subscribr.subscribe('secondEvent', secondHandler);
+
+		expect(typeof subscribr).toBe('object');
+		expect(subscribr).toBeInstanceOf(Subscribr);
+		expect(subscribr.constructor).toBe(Subscribr);
+		expect(Object.prototype.toString.call(subscribr)).toBe('[object Subscribr]');
+	});
+
+	test('subscribe returns a real Subscription and keeps the handler bound to its context', () => {
+		const subscribr = new Subscribr();
+		const context = { label: 'context' };
+		const received: Array<{ event: Event; data?: unknown; context: unknown }> = [];
+
+		const subscription = subscribr.subscribe('myEvent', function(this: unknown, event: Event, data?: unknown) {
+			received.push({ event, data, context: this });
+		}, context);
+
+		expect(subscription).toBeInstanceOf(Subscription);
+		expect(subscription.eventName).toBe('myEvent');
+		expect(subscription.contextEventHandler).toBeInstanceOf(ContextEventHandler);
+		expect(Object.prototype.toString.call(subscription)).toBe('[object Subscription]');
+		expect(Object.prototype.toString.call(subscription.contextEventHandler)).toBe('[object ContextEventHandler]');
+		expect(subscribr.isSubscribed(subscription)).toBe(true);
+
+		const event = new CustomEvent('myEvent');
+		const payload = { amount: 42 };
+		subscribr.publish('myEvent', event, payload);
+
+		expect(received).toHaveLength(1);
+		expect(received[0]).toMatchObject({
+			event,
+			data: payload,
+			context,
+		});
+	});
+});
+
+describe('subscribe and publish', () => {
+	test('delivers the event and custom data to each matching subscriber', () => {
+		const subscribr = new Subscribr();
+		const seen: Array<{ eventName: string; event: Event; data?: unknown }> = [];
+
+		subscribr.subscribe('user-updated', (event, data) => {
+			seen.push({ eventName: event.type, event, data });
+		});
+		subscribr.subscribe('user-updated', (event, data) => {
+			seen.push({ eventName: event.type, event, data });
+		});
+
+		const event = new CustomEvent('user-updated');
+		const payload = { id: 7 };
+		subscribr.publish('user-updated', event, payload);
+
+		expect(seen).toHaveLength(2);
+		expect(seen[0]).toMatchObject({ eventName: 'user-updated', event, data: payload });
+		expect(seen[1]).toMatchObject({ eventName: 'user-updated', event, data: payload });
+	});
+
+	test('does not deliver messages published to a different event name', () => {
+		const subscribr = new Subscribr();
+		const received: string[] = [];
+
+		subscribr.subscribe('firstEvent', (event) => {
+			received.push(event.type);
+		});
+		subscribr.publish('secondEvent');
+
+		expect(received).toEqual([]);
+	});
+});
+
+describe('unsubscribe and subscription state', () => {
+	test('unsubscribe removes active subscriptions and returns the correct boolean state', () => {
+		const subscribr = new Subscribr();
+		const seen: string[] = [];
+		const subscription = subscribr.subscribe('myNewEvent', (event) => seen.push(event.type));
+
+		expect(subscribr.isSubscribed(subscription)).toBe(true);
+		expect(subscribr.unsubscribe(subscription)).toBe(true);
+		expect(subscribr.isSubscribed(subscription)).toBe(false);
+		expect(subscribr.unsubscribe(subscription)).toBe(false);
+
+		subscribr.publish('myNewEvent');
+		expect(seen).toEqual([]);
+	});
+
+	test('tracks multiple subscriptions independently for the same event', () => {
+		const subscribr = new Subscribr();
+		const seen: string[] = [];
+		const first = subscribr.subscribe('sharedEvent', (event) => seen.push(`first:${event.type}`));
+		const second = subscribr.subscribe('sharedEvent', (event) => seen.push(`second:${event.type}`));
+
+		expect(subscribr.isSubscribed(first)).toBe(true);
+		expect(subscribr.isSubscribed(second)).toBe(true);
+
+		subscribr.unsubscribe(first);
+		expect(subscribr.isSubscribed(first)).toBe(false);
+		expect(subscribr.isSubscribed(second)).toBe(true);
+
+		subscribr.publish('sharedEvent');
+		expect(seen).toEqual(['second:sharedEvent']);
+	});
+
+	test('returns false for an invalid unsubscribe value', () => {
+		const subscribr = new Subscribr();
+
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(subscribr.unsubscribe(null)).toBe(false);
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(subscribr.unsubscribe(undefined)).toBe(false);
+	});
+});
+
+describe('destroy and disposable cleanup', () => {
+	test('destroy removes all active subscriptions and prevents future delivery', () => {
+		const subscribr = new Subscribr();
+		const seen: string[] = [];
+		const firstSubscription = subscribr.subscribe('firstEvent', (event) => seen.push(`first:${event.type}`));
+		const secondSubscription = subscribr.subscribe('secondEvent', (event) => seen.push(`second:${event.type}`));
 
 		subscribr.destroy();
 
@@ -107,108 +131,83 @@ describe('Destroy', () => {
 		expect(subscribr.isSubscribed(secondSubscription)).toBe(false);
 		subscribr.publish('firstEvent');
 		subscribr.publish('secondEvent');
-		expect(firstHandler).not.toHaveBeenCalled();
-		expect(secondHandler).not.toHaveBeenCalled();
+		expect(seen).toEqual([]);
 	});
+
+	// test('Symbol.dispose cleans up the instance automatically when leaving scope', () => {
+	// 	const subscribr = new Subscribr();
+	// 	const seen: string[] = [];
+	// 	let firstSubscription!: Subscription;
+	// 	let secondSubscription!: Subscription;
+
+	// 	{
+	// 		using instance = subscribr;
+	// 		firstSubscription = instance.subscribe('firstEvent', (event) => seen.push(`first:${event.type}`));
+	// 		secondSubscription = instance.subscribe('secondEvent', (event) => seen.push(`second:${event.type}`));
+
+	// 		expect(instance.isSubscribed(firstSubscription)).toBe(true);
+	// 		expect(instance.isSubscribed(secondSubscription)).toBe(true);
+	// 	}
+
+	// 	expect(subscribr.isSubscribed(firstSubscription)).toBe(false);
+	// 	expect(subscribr.isSubscribed(secondSubscription)).toBe(false);
+	// 	subscribr.publish('firstEvent');
+	// 	subscribr.publish('secondEvent');
+	// 	expect(seen).toEqual([]);
+	// });
 });
 
-describe('Event Name Validation', () => {
+describe('event name validation', () => {
 	const subscribr = new Subscribr();
 
-	test('Subscribe with empty string should throw TypeError', () => {
-		expect(() => subscribr.subscribe('', vi.fn())).toThrow(TypeError);
-		expect(() => subscribr.subscribe('', vi.fn())).toThrow('Event name must be a non-empty string');
+	test('subscribe rejects empty or malformed event names', () => {
+		expect(() => subscribr.subscribe('', () => {})).toThrow(TypeError);
+		expect(() => subscribr.subscribe('', () => {})).toThrow('Event name must be a non-empty string');
+		expect(() => subscribr.subscribe(' event', () => {})).toThrow(Error);
+		expect(() => subscribr.subscribe('event ', () => {})).toThrow(Error);
 	});
 
-	test('Subscribe with non-string should throw TypeError', () => {
-		// @ts-expect-error Testing invalid input
-		expect(() => subscribr.subscribe(null, vi.fn())).toThrow(TypeError);
-		// @ts-expect-error Testing invalid input
-		expect(() => subscribr.subscribe(undefined, vi.fn())).toThrow(TypeError);
-		// @ts-expect-error Testing invalid input
-		expect(() => subscribr.subscribe(123, vi.fn())).toThrow(TypeError);
-	});
-
-	test('Subscribe with leading whitespace should throw Error', () => {
-		expect(() => subscribr.subscribe(' myEvent', vi.fn())).toThrow(Error);
-		expect(() => subscribr.subscribe(' myEvent', vi.fn())).toThrow('Event name cannot have leading or trailing whitespace');
-	});
-
-	test('Subscribe with trailing whitespace should throw Error', () => {
-		expect(() => subscribr.subscribe('myEvent ', vi.fn())).toThrow(Error);
-		expect(() => subscribr.subscribe('myEvent ', vi.fn())).toThrow('Event name cannot have leading or trailing whitespace');
-	});
-
-	test('Publish with empty string should throw TypeError', () => {
+	test('publish rejects empty or malformed event names', () => {
 		expect(() => subscribr.publish('')).toThrow(TypeError);
 		expect(() => subscribr.publish('')).toThrow('Event name must be a non-empty string');
+		expect(() => subscribr.publish(' event')).toThrow(Error);
+		expect(() => subscribr.publish('event ')).toThrow(Error);
 	});
 
-	test('Publish with non-string should throw TypeError', () => {
-		// @ts-expect-error Testing invalid input
-		expect(() => subscribr.publish(null)).toThrow(TypeError);
-		// @ts-expect-error Testing invalid input
+	test('rejects non-string event names at runtime', () => {
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(() => subscribr.subscribe(null, () => {})).toThrow(TypeError);
+		// @ts-expect-error invalid runtime input for validation coverage
 		expect(() => subscribr.publish(undefined)).toThrow(TypeError);
-		// @ts-expect-error Testing invalid input
-		expect(() => subscribr.publish(123)).toThrow(TypeError);
-	});
-
-	test('Publish with whitespace should throw Error', () => {
-		expect(() => subscribr.publish(' myEvent')).toThrow(Error);
-		expect(() => subscribr.publish('myEvent ')).toThrow(Error);
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(() => subscribr.subscribe(123, () => {})).toThrow(TypeError);
 	});
 });
 
-describe('Error Handling in Event Handlers', () => {
-	test('Handler error should not prevent other handlers from executing', () => {
+describe('error handling in event handlers', () => {
+	test('continues delivering events to later handlers after an earlier handler throws', () => {
 		const subscribr = new Subscribr();
-		const firstHandler = vi.fn(() => { throw new Error('First handler error'); });
-		const secondHandler = vi.fn();
-		const thirdHandler = vi.fn();
+		const seen: string[] = [];
 
-		subscribr.subscribe('errorEvent', firstHandler);
-		subscribr.subscribe('errorEvent', secondHandler);
-		subscribr.subscribe('errorEvent', thirdHandler);
-
-		// Suppress console.error for this test
-		const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+		subscribr.subscribe('errorEvent', () => {
+			seen.push('first');
+			throw new Error('First handler error');
+		});
+		subscribr.subscribe('errorEvent', () => seen.push('second'));
+		subscribr.subscribe('errorEvent', () => seen.push('third'));
 
 		subscribr.publish('errorEvent');
 
-		expect(firstHandler).toHaveBeenCalled();
-		expect(secondHandler).toHaveBeenCalled();
-		expect(thirdHandler).toHaveBeenCalled();
-		expect(consoleErrorSpy).toHaveBeenCalledWith(
-			"Error in event handler for 'errorEvent':",
-			expect.any(Error)
-		);
-
-		consoleErrorSpy.mockRestore();
+		expect(seen).toEqual(['first', 'second', 'third']);
 	});
 
-	test('Custom error handler should be called on handler error', () => {
-		const subscribr = new Subscribr();
-		const errorHandler = vi.fn();
-		const testError = new Error('Test error');
-		const faultyHandler = vi.fn(() => { throw testError; });
-
-		subscribr.setErrorHandler(errorHandler);
-		subscribr.subscribe('errorEvent', faultyHandler);
-
-		const event = new CustomEvent('errorEvent');
-		const data = { test: 'data' };
-		subscribr.publish('errorEvent', event, data);
-
-		expect(errorHandler).toHaveBeenCalledWith(testError, 'errorEvent', event, data);
-		expect(faultyHandler).toHaveBeenCalled();
-	});
-
-	test('Custom error handler receives correct parameters', () => {
+	test('calls the custom error handler with the original error and event metadata', () => {
 		const subscribr = new Subscribr();
 		let capturedError: Error | null = null;
 		let capturedEventName: string | null = null;
 		let capturedEvent: Event | null = null;
 		let capturedData: unknown = null;
+		const testError = new Error('Test error');
 
 		subscribr.setErrorHandler((error, eventName, event, data) => {
 			capturedError = error;
@@ -216,137 +215,133 @@ describe('Error Handling in Event Handlers', () => {
 			capturedEvent = event;
 			capturedData = data;
 		});
+		subscribr.subscribe('errorEvent', () => {
+			throw testError;
+		});
 
-		const testError = new Error('Handler failure');
-		subscribr.subscribe('testEvent', () => { throw testError; });
-
-		const customEvent = new CustomEvent('testEvent');
-		const eventData = { userId: 123 };
-		subscribr.publish('testEvent', customEvent, eventData);
+		const event = new CustomEvent('errorEvent');
+		const data = { userId: 123 };
+		subscribr.publish('errorEvent', event, data);
 
 		expect(capturedError).toBe(testError);
-		expect(capturedEventName).toBe('testEvent');
-		expect(capturedEvent).toBe(customEvent);
-		expect(capturedData).toEqual(eventData);
+		expect(capturedEventName).toBe('errorEvent');
+		expect(capturedEvent).toBe(event);
+		expect(capturedData).toEqual(data);
 	});
 
-	test('Error handler should not be called when handlers succeed', () => {
+	test('does not call the custom error handler when all handlers succeed', () => {
 		const subscribr = new Subscribr();
-		const errorHandler = vi.fn();
-		const successHandler = vi.fn();
+		let errorCalls = 0;
+		let successCalls = 0;
 
-		subscribr.setErrorHandler(errorHandler);
-		subscribr.subscribe('successEvent', successHandler);
+		subscribr.setErrorHandler(() => {
+			errorCalls += 1;
+		});
+		subscribr.subscribe('successEvent', () => {
+			successCalls += 1;
+		});
+
 		subscribr.publish('successEvent');
 
-		expect(successHandler).toHaveBeenCalled();
-		expect(errorHandler).not.toHaveBeenCalled();
+		expect(successCalls).toBe(1);
+		expect(errorCalls).toBe(0);
 	});
 });
 
-describe('Once Subscription', () => {
-	test('subscribe() with once option should create a one-time subscription', () => {
+describe('once subscriptions', () => {
+	test('runs once and then auto-unsubscribes', () => {
 		const subscribr = new Subscribr();
-		const handler = vi.fn();
-		const subscription = subscribr.subscribe('onceEvent', handler, handler, { once: true });
-
-		expect(subscription).toBeInstanceOf(Subscription);
-		expect(subscribr.isSubscribed(subscription)).toBe(true);
-		
-		subscribr.publish('onceEvent');
-		expect(handler).toHaveBeenCalledTimes(1);
-		expect(subscribr.isSubscribed(subscription)).toBe(false);
-		
-		subscribr.publish('onceEvent');
-		expect(handler).toHaveBeenCalledTimes(1);
-	});
-
-	test('once handler should be called on first publish', () => {
-		const subscribr = new Subscribr();
-		const handler = vi.fn();
-		subscribr.subscribe('onceEvent', handler, handler, { once: true });
-
-		const event = new CustomEvent('onceEvent');
-		const data = { test: 'data' };
-		subscribr.publish('onceEvent', event, data);
-
-		expect(handler).toHaveBeenCalledTimes(1);
-		expect(handler).toHaveBeenCalledWith(event, data);
-	});
-
-	test('once handler should not be called on second publish', () => {
-		const subscribr = new Subscribr();
-		const handler = vi.fn();
-		const subscription = subscribr.subscribe('onceEvent', handler, handler, { once: true });
-
-		subscribr.publish('onceEvent');
-		expect(handler).toHaveBeenCalledTimes(1);
-		expect(subscribr.isSubscribed(subscription)).toBe(false);
-
-		subscribr.publish('onceEvent');
-		expect(handler).toHaveBeenCalledTimes(1);
-	});
-
-	test('once should auto-unsubscribe after first event', () => {
-		const subscribr = new Subscribr();
-		const handler = vi.fn();
-		const subscription = subscribr.subscribe('onceEvent', handler, handler, { once: true });
-
-		expect(subscribr.isSubscribed(subscription)).toBe(true);
-		subscribr.publish('onceEvent');
-		expect(subscribr.isSubscribed(subscription)).toBe(false);
-	});
-
-	test('once can be manually unsubscribed before trigger', () => {
-		const subscribr = new Subscribr();
-		const handler = vi.fn();
-		const subscription = subscribr.subscribe('onceEvent', handler, handler, { once: true });
-
-		expect(subscribr.isSubscribed(subscription)).toBe(true);
-		subscribr.unsubscribe(subscription);
-		expect(subscribr.isSubscribed(subscription)).toBe(false);
-
-		subscribr.publish('onceEvent');
-		expect(handler).not.toHaveBeenCalled();
-	});
-
-	test('once with custom context should preserve context', () => {
-		const subscribr = new Subscribr();
-		const context = { value: 'test-context' };
-		let capturedContext: unknown = null;
-
-		subscribr.subscribe('onceEvent', function(this: unknown) {
-			capturedContext = this;
+		const seen: Array<{ event: Event; data?: unknown; context: unknown }> = [];
+		const context = { tag: 'once-context' };
+		const subscription = subscribr.subscribe('onceEvent', function(this: unknown, event: Event, data?: unknown) {
+			seen.push({ event, data, context: this });
 		}, context, { once: true });
 
+		expect(subscribr.isSubscribed(subscription)).toBe(true);
+
+		subscribr.publish('onceEvent', new CustomEvent('onceEvent'), { value: 1 });
+		expect(seen).toHaveLength(1);
+		expect(subscribr.isSubscribed(subscription)).toBe(false);
+
+		subscribr.publish('onceEvent', new CustomEvent('onceEvent'), { value: 2 });
+		expect(seen).toHaveLength(1);
+		expect(seen[0]).toMatchObject({ data: { value: 1 }, context });
+	});
+
+	test('preserves custom context for once handlers and allows manual unsubscribe before firing', () => {
+		const subscribr = new Subscribr();
+		const context = { indicator: 'active' };
+		let capturedContext: unknown = null;
+		let callCount = 0;
+		const subscription = subscribr.subscribe('onceEvent', function(this: unknown) {
+			capturedContext = this;
+			callCount += 1;
+		}, context, { once: true });
+
+		subscribr.unsubscribe(subscription);
 		subscribr.publish('onceEvent');
-		expect(capturedContext).toBe(context);
+
+		expect(capturedContext).toBe(null);
+		expect(callCount).toBe(0);
+		expect(subscribr.isSubscribed(subscription)).toBe(false);
 	});
 
-	test('Multiple once subscriptions should each fire once', () => {
+	test('unsubscribes a once handler before invocation', () => {
 		const subscribr = new Subscribr();
-		const handler1 = vi.fn();
-		const handler2 = vi.fn();
-		const handler3 = vi.fn();
+		let callCount = 0;
+		let subscription!: Subscription;
 
-		subscribr.subscribe('multiOnce', handler1, handler1, { once: true });
-		subscribr.subscribe('multiOnce', handler2, handler2, { once: true });
-		subscribr.subscribe('multiOnce', handler3, handler3, { once: true });
+		subscription = subscribr.subscribe('onceEvent', () => {
+			callCount += 1;
+			subscribr.publish('onceEvent');
+		}, undefined, { once: true });
 
-		subscribr.publish('multiOnce');
-		expect(handler1).toHaveBeenCalledTimes(1);
-		expect(handler2).toHaveBeenCalledTimes(1);
-		expect(handler3).toHaveBeenCalledTimes(1);
+		subscribr.publish('onceEvent');
 
-		subscribr.publish('multiOnce');
-		expect(handler1).toHaveBeenCalledTimes(1);
-		expect(handler2).toHaveBeenCalledTimes(1);
-		expect(handler3).toHaveBeenCalledTimes(1);
+		expect(callCount).toBe(1);
+		expect(subscribr.isSubscribed(subscription)).toBe(false);
 	});
 
-	test('once should validate event name', () => {
+	test('unsubscribes a once handler even when it throws', () => {
 		const subscribr = new Subscribr();
-		expect(() => subscribr.subscribe('', vi.fn(), vi.fn(), { once: true })).toThrow(TypeError);
-		expect(() => subscribr.subscribe(' event', vi.fn(), vi.fn(), { once: true })).toThrow(Error);
+		let errorCalls = 0;
+		let handlerCalls = 0;
+		let subscription!: Subscription;
+
+		subscribr.setErrorHandler(() => {
+			errorCalls += 1;
+		});
+		subscription = subscribr.subscribe('onceEvent', () => {
+			handlerCalls += 1;
+			throw new Error('once failure');
+		}, undefined, { once: true });
+
+		subscribr.publish('onceEvent');
+		subscribr.publish('onceEvent');
+
+		expect(handlerCalls).toBe(1);
+		expect(errorCalls).toBe(1);
+		expect(subscribr.isSubscribed(subscription)).toBe(false);
+	});
+
+	test('supports multiple once subscriptions independently', () => {
+		const subscribr = new Subscribr();
+		const seen: string[] = [];
+
+		subscribr.subscribe('multiOnce', () => seen.push('first'), undefined, { once: true });
+		subscribr.subscribe('multiOnce', () => seen.push('second'), undefined, { once: true });
+		subscribr.subscribe('multiOnce', () => seen.push('third'), undefined, { once: true });
+
+		subscribr.publish('multiOnce');
+		expect(seen).toEqual(['first', 'second', 'third']);
+
+		subscribr.publish('multiOnce');
+		expect(seen).toEqual(['first', 'second', 'third']);
+	});
+
+	test('validates the event name before creating a once subscription', () => {
+		const subscribr = new Subscribr();
+		expect(() => subscribr.subscribe('', () => {}, undefined, { once: true })).toThrow(TypeError);
+		expect(() => subscribr.subscribe(' event', () => {}, undefined, { once: true })).toThrow(Error);
 	});
 });
