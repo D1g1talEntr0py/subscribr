@@ -34,8 +34,8 @@ export class Subscribr {
 		if (options?.once) {
 			const originalHandler = eventHandler;
 			eventHandler = (event: Event, data?: unknown) => {
-				originalHandler.call(context, event, data);
 				this.unsubscribe(subscription);
+				originalHandler.call(context, event, data);
 			};
 		}
 
@@ -53,15 +53,10 @@ export class Subscribr {
 	 * @param subscription The subscription to unsubscribe.
 	 * @returns true if eventListener has been removed successfully. false if the value is not found or if the value is not an object.
 	 */
-	unsubscribe({ eventName, contextEventHandler }: Subscription): boolean {
-		const contextEventHandlers = this.#subscribers.get(eventName) ?? new Set();
-		const removed = contextEventHandlers.delete(contextEventHandler);
+	unsubscribe(subscription: Subscription): boolean {
+		if (!subscription || typeof subscription !== 'object') { return false }
 
-		if (removed && contextEventHandlers.size === 0) {
-			this.#subscribers.delete(eventName);
-		}
-
-		return removed;
+		return this.#subscribers.deleteValue(subscription.eventName, subscription.contextEventHandler);
 	}
 
 	/**
@@ -74,7 +69,12 @@ export class Subscribr {
 	 */
 	publish<T>(eventName: string, event: Event = new CustomEvent(eventName), data?: T): void {
 		this.#validateEventName(eventName);
-		this.#subscribers.get(eventName)?.forEach((contextEventHandler: ContextEventHandler) => {
+
+		const contextEventHandlers = this.#subscribers.get(eventName);
+
+		if (!contextEventHandlers) { return }
+
+		for (const contextEventHandler of contextEventHandlers) {
 			try {
 				contextEventHandler.handle(event, data);
 			} catch (error) {
@@ -84,7 +84,7 @@ export class Subscribr {
 					console.error(`Error in event handler for '${eventName}':`, error);
 				}
 			}
-		});
+		}
 	}
 
 	/**
