@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		"sourceMap": true,
 		"declaration": true,
+		"isolatedDeclarations": true,
 		"isolatedModules": true,
 		"forceConsistentCasingInFileNames": true,
 		"allowUnusedLabels": false,
@@ -11,7 +12,7 @@
 		"noImplicitReturns": true,
 		"noUncheckedIndexedAccess": true,
 		"rootDir": "./src",
-		"lib": [ "esnext", "dom" ],
+		"lib": [ "ES2022", "DOM" ],
 		"types": [ "node" ],
 		"module": "preserve"
 	},

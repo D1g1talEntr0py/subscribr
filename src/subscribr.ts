@@ -104,7 +104,7 @@ export class Subscribr {
 	 * @throws {TypeError} If the event name is not a non-empty string.
 	 * @throws {Error} If the event name has leading or trailing whitespace.
 	 */
-	#validateEventName(eventName: string): void {
+	#validateEventName(eventName: string) {
 		if (!eventName || typeof eventName !== 'string') {
 			throw new TypeError('Event name must be a non-empty string');
 		}
