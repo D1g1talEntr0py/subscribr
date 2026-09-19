@@ -1,3 +1,10 @@
+## [4.2.8](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.7...v4.2.8) (2026-09-19)
+
+
+### Bug Fixes
+
+* **subscriptions:** stabilize unsubscribe during dispatch ([13ad542](https://github.com/D1g1talEntr0py/subscribr/commit/13ad5428b109f9abafdb6ccfe770ee527bc10a93))
+
 ## [4.2.7](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.6...v4.2.7) (2026-09-14)
 
 
