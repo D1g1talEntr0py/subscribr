@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { ContextEventHandler } from '../src/context-event-handler.js';
-import { Subscribr } from '../src/subscribr.js';
-import { Subscription } from '../src/subscription.js';
+import { Subscribr, type Subscription } from '../src/subscribr.js';
 
 describe('Subscribr instance behavior', () => {
 	test('creates a Subscribr instance with the expected identity and tag', () => {
@@ -22,10 +21,11 @@ describe('Subscribr instance behavior', () => {
 			received.push({ event, data, context: this });
 		}, context);
 
-		expect(subscription).toBeInstanceOf(Subscription);
-		expect(subscription.eventName).toBe('myEvent');
-		expect(subscription.contextEventHandler).toBeInstanceOf(ContextEventHandler);
-		expect(Object.prototype.toString.call(subscription)).toBe('[object Subscription]');
+		expect(subscription).toMatchObject({
+			eventName: 'myEvent',
+			contextEventHandler: expect.any(ContextEventHandler),
+		});
+		expect(typeof subscription.contextEventHandler.handle).toBe('function');
 		expect(Object.prototype.toString.call(subscription.contextEventHandler)).toBe('[object ContextEventHandler]');
 		expect(subscribr.isSubscribed(subscription)).toBe(true);
 
@@ -115,6 +115,21 @@ describe('unsubscribe and subscription state', () => {
 		expect(subscribr.unsubscribe(null)).toBe(false);
 		// @ts-expect-error invalid runtime input for validation coverage
 		expect(subscribr.unsubscribe(undefined)).toBe(false);
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(subscribr.unsubscribe({})).toBe(false);
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(subscribr.unsubscribe({ eventName: 'event' })).toBe(false);
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(subscribr.unsubscribe({ eventName: 'event', contextEventHandler: {} })).toBe(false);
+	});
+
+	test('returns false for an invalid subscription value', () => {
+		const subscribr = new Subscribr();
+
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(subscribr.isSubscribed(null)).toBe(false);
+		// @ts-expect-error invalid runtime input for validation coverage
+		expect(subscribr.isSubscribed(undefined)).toBe(false);
 	});
 });
 
@@ -289,7 +304,7 @@ describe('once subscriptions', () => {
 	test('unsubscribes a once handler before invocation', () => {
 		const subscribr = new Subscribr();
 		let callCount = 0;
-		let subscription!: Subscription;
+		let subscription: Subscription;
 
 		subscription = subscribr.subscribe('onceEvent', () => {
 			callCount += 1;
@@ -306,7 +321,7 @@ describe('once subscriptions', () => {
 		const subscribr = new Subscribr();
 		let errorCalls = 0;
 		let handlerCalls = 0;
-		let subscription!: Subscription;
+		let subscription;
 
 		subscribr.setErrorHandler(() => {
 			errorCalls += 1;
