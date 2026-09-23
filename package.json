@@ -1,7 +1,7 @@
 {
 	"name": "@d1g1tal/subscribr",
 	"author": "D1g1talEntr0py",
-	"version": "5.0.0",
+	"version": "5.0.1",
 	"license": "MIT",
 	"description": "JavaScript Publish/Subscribe Library",
 	"homepage": "https://github.com/D1g1talEntr0py/subscribr#readme",

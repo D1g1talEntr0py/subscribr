@@ -1,3 +1,5 @@
+## [5.0.1](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.0...v5.0.1) (2026-09-23)
+
 # [5.0.0](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.8...v5.0.0) (2026-09-23)
 
 
