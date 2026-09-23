@@ -1,3 +1,13 @@
+# [5.0.0](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.8...v5.0.0) (2026-09-23)
+
+
+* refactor!(subscription): replace Subscription class with plain object type ([b625507](https://github.com/D1g1talEntr0py/subscribr/commit/b6255078c9bccc7812a0f8cd86c97a44320a7e45))
+
+
+### BREAKING CHANGES
+
+* `Subscription` is no longer a class instance; `unsubscribe`/`isSubscribed` now accept a plain `{ eventName, contextEventHandler }` object instead of a `Subscription` instance
+
 ## [4.2.8](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.7...v4.2.8) (2026-09-19)
 
 
