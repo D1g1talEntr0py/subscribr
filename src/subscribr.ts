@@ -1,22 +1,11 @@
 import { SetMultiMap } from '@d1g1tal/collections/set-multi-map';
 import { ContextEventHandler } from './context-event-handler';
-import { Subscription } from './subscription';
-import type { EventHandler, ErrorHandler, SubscriptionOptions } from './@types';
+import type { Subscription, SubscriptionOptions, EventHandler, ErrorHandler, ContextAwareEventHandler } from './@types';
 
 /** A class that allows objects to subscribe to events and be notified when the event is published. */
 export class Subscribr {
 	#errorHandler?: ErrorHandler;
-	readonly #subscribers: SetMultiMap<string, ContextEventHandler> = new SetMultiMap();
-
-	/**
-	 * Set a custom error handler for handling errors that occur in event listeners.
-	 * If not set, errors will be logged to the console.
-	 *
-	 * @param errorHandler The error handler function to call when an error occurs in an event listener.
-	 */
-	setErrorHandler(errorHandler: ErrorHandler): void {
-		this.#errorHandler = errorHandler;
-	}
+	readonly #subscribers: SetMultiMap<string, ContextAwareEventHandler> = new SetMultiMap();
 
 	/**
 	 * Subscribe to an event
@@ -40,9 +29,9 @@ export class Subscribr {
 		}
 
 		const contextEventHandler = new ContextEventHandler(context, eventHandler);
-		this.#subscribers.set(eventName, contextEventHandler);
+		const subscription = { eventName, contextEventHandler };
 
-		const subscription = new Subscription(eventName, contextEventHandler);
+		this.#subscribers.add(eventName, contextEventHandler);
 
 		return subscription;
 	}
@@ -51,10 +40,10 @@ export class Subscribr {
 	 * Unsubscribe from the event
 	 *
 	 * @param subscription The subscription to unsubscribe.
-	 * @returns true if eventListener has been removed successfully. false if the value is not found or if the value is not an object.
+	 * @returns true if eventListener has been removed successfully. false if the value is invalid or not found.
 	 */
 	unsubscribe(subscription: Subscription): boolean {
-		if (!subscription || typeof subscription !== 'object') { return false }
+		if (subscription === null || typeof subscription !== 'object') { return false }
 
 		return this.#subscribers.deleteValue(subscription.eventName, subscription.contextEventHandler);
 	}
@@ -72,13 +61,13 @@ export class Subscribr {
 
 		const contextEventHandlers = this.#subscribers.get(eventName);
 
-		if (!contextEventHandlers) { return }
+		if (contextEventHandlers === undefined || contextEventHandlers.size === 0) { return }
 
 		for (const contextEventHandler of contextEventHandlers) {
 			try {
 				contextEventHandler.handle(event, data);
 			} catch (error) {
-				if (this.#errorHandler) {
+				if (this.#errorHandler !== undefined) {
 					this.#errorHandler(error as Error, eventName, event, data);
 				} else {
 					console.error(`Error in event handler for '${eventName}':`, error);
@@ -93,8 +82,20 @@ export class Subscribr {
 	 * @param subscription The subscription object.
 	 * @returns true if the event name and handler are subscribed, false otherwise.
 	 */
-	isSubscribed({ eventName, contextEventHandler }: Subscription): boolean {
-		return this.#subscribers.get(eventName)?.has(contextEventHandler) ?? false;
+	isSubscribed(subscription: Subscription): boolean {
+		if (subscription === null || typeof subscription !== 'object') { return false }
+
+		return this.#subscribers.hasValue(subscription.eventName, subscription.contextEventHandler);
+	}
+
+	/**
+	 * Set a custom error handler for handling errors that occur in event listeners.
+	 * If not set, errors will be logged to the console.
+	 *
+	 * @param errorHandler The error handler function to call when an error occurs in an event listener.
+	 */
+	setErrorHandler(errorHandler: ErrorHandler): void {
+		this.#errorHandler = errorHandler;
 	}
 
 	/**
@@ -114,9 +115,7 @@ export class Subscribr {
 		}
 	}
 
-	/**
-	 * Clears all subscriptions. The instance should not be used after calling this method.
-	 */
+	/** Clears all subscriptions. The instance should not be used after calling this method. */
 	destroy(): void {
 		this.#subscribers.clear();
 	}
@@ -132,6 +131,5 @@ export class Subscribr {
 	}
 }
 
-export { Subscription } from './subscription';
 export { ContextEventHandler } from './context-event-handler';
-export type { EventHandler } from './@types';
+export type { Subscription, EventHandler } from './@types';

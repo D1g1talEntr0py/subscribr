@@ -1,7 +1,7 @@
-import type { EventHandler } from './@types';
+import type { ContextAwareEventHandler, EventHandler } from './@types';
 
 /** A wrapper for an event handler that binds a context to the event handler. */
-export class ContextEventHandler {
+export class ContextEventHandler implements ContextAwareEventHandler {
 	readonly #context: unknown;
 	readonly #eventHandler: EventHandler;
 
