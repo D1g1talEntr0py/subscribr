@@ -30,6 +30,11 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - id: release
         run: |
+          LATEST_TAG=$(git describe --tags --match 'v*' --abbrev=0)
+          if ! git log "$LATEST_TAG..HEAD" --format='%s%n%b' | grep -Eq '^[a-z-]+(\([^)]*\))?!:|^(feat|fix|perf|revert)(\([^)]*\))?:|BREAKING[- ]CHANGE:'; then
+            echo "No version bump required"
+            exit 0
+          fi
           BUMP_LOG=$(mktemp)
           VERSION=$(git cliff --github-repo "$GITHUB_REPOSITORY" --bumped-version 2>"$BUMP_LOG")
           cat "$BUMP_LOG" >&2
