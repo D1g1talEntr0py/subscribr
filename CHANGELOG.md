@@ -1,7 +1,20 @@
 ## [5.0.1](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.0...v5.0.1) (2026-09-23)
 
+### Code Refactoring
+
+* **release:** update release rules for semantic versioning as commits were getting filtered for no reason ([c064210](https://github.com/D1g1talEntr0py/subscribr/commit/c064210))
+
 # [5.0.0](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.8...v5.0.0) (2026-09-23)
 
+### Chores
+
+* **deps:** update dependencies and switch to verbatimModuleSyntax ([fccb4a9](https://github.com/D1g1talEntr0py/subscribr/commit/fccb4a97fba1d4ad89a7a54f29ef7ee4ced96ea0))
+
+### Tests
+
+* update tests for Subscription object refactor ([277270f](https://github.com/D1g1talEntr0py/subscribr/commit/277270fd8ee4f5cd3efe2bdb655b39ce52b014ff))
+
+### Code Refactoring
 
 * refactor!(subscription): replace Subscription class with plain object type ([b625507](https://github.com/D1g1talEntr0py/subscribr/commit/b6255078c9bccc7812a0f8cd86c97a44320a7e45))
 
