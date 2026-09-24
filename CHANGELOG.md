@@ -8,12 +8,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Bug Fixes
+* **release:** ensure version is correctly formatted and update release notes generation (d53b896)
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Bug Fixes
 * **release:** fix git-cliff commit rendering (5900f5a)
 
 
 
 
 
+
+### Chores
+* **release:** v5.0.2 [skip ci] (1875b96)
 
 
 ### Code Refactoring
