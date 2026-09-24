@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.4](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.3...v5.0.4) - 2026-09-24
+
+
+
+
+
+
+
+
+
+### Chores
+* **release:** link generated changelog entries ([3755a79](https://github.com/D1g1talEntr0py/subscribr/commit/3755a79e69cc100b08cae53c95b99324eb189288))
+
+
+
+
+
+
+
 ## [5.0.3](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.2...v5.0.3) - 2026-09-24
 
 
@@ -1014,3 +1033,4 @@ chore(main): release 4.1.0 ([8ebffbc](https://github.com/D1g1talEntr0py/subscrib
 -Added method 'isSubscribed' to check if the Subscription is active.
 -Updated README.
 -Added first unit tests. ([ab6f232](https://github.com/D1g1talEntr0py/subscribr/commit/ab6f23210e9179fcdd7cb940679b952a6fd74769))
+
