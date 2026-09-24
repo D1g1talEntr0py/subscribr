@@ -31,11 +31,13 @@ jobs:
       - id: release
         run: |
           VERSION=$(git cliff --bumped-version)
+          VERSION=${VERSION#v}
           if [[ -z "$VERSION" ]]; then
             echo "No commits since the latest release"
             exit 0
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          git cliff --tag "v$VERSION" --output /tmp/release-notes.md
           git cliff --tag "v$VERSION" --output CHANGELOG.md
           npm version "$VERSION" --no-git-tag-version
           pnpm lint
