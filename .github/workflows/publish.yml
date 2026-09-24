@@ -48,7 +48,7 @@ jobs:
             exit 0
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          git cliff --github-repo "$GITHUB_REPOSITORY" --tag "v$VERSION" --output /tmp/release-notes.md
+          git cliff --github-repo "$GITHUB_REPOSITORY" --tag "v$VERSION" --unreleased --strip header --output /tmp/release-notes.md
           git cliff --github-repo "$GITHUB_REPOSITORY" --tag "v$VERSION" --output CHANGELOG.md
           npm version "$VERSION" --no-git-tag-version
           pnpm lint
