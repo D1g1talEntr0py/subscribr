@@ -30,15 +30,21 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - id: release
         run: |
-          VERSION=$(git cliff --bumped-version)
+          BUMP_LOG=$(mktemp)
+          VERSION=$(git cliff --github-repo "$GITHUB_REPOSITORY" --bumped-version 2>"$BUMP_LOG")
+          cat "$BUMP_LOG" >&2
+          if grep -q "There is nothing to bump" "$BUMP_LOG"; then
+            echo "No version bump required"
+            exit 0
+          fi
           VERSION=${VERSION#v}
           if [[ -z "$VERSION" ]]; then
             echo "No commits since the latest release"
             exit 0
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          git cliff --tag "v$VERSION" --output /tmp/release-notes.md
-          git cliff --tag "v$VERSION" --output CHANGELOG.md
+          git cliff --github-repo "$GITHUB_REPOSITORY" --tag "v$VERSION" --output /tmp/release-notes.md
+          git cliff --github-repo "$GITHUB_REPOSITORY" --tag "v$VERSION" --output CHANGELOG.md
           npm version "$VERSION" --no-git-tag-version
           pnpm lint
           pnpm build:minify
