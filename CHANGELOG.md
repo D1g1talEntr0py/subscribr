@@ -6,6 +6,12 @@
 
 # [5.0.0](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.8...v5.0.0) (2026-09-23)
 
+### Breaking Changes
+
+* **subscription:** replace Subscription class with plain object type ([b625507](https://github.com/D1g1talEntr0py/subscribr/commit/b6255078c9bccc7812a0f8cd86c97a44320a7e45))
+
+* `Subscription` is no longer a class instance; `unsubscribe`/`isSubscribed` now accept a plain `{ eventName, contextEventHandler }` object instead of a `Subscription` instance
+
 ### Chores
 
 * **deps:** update dependencies and switch to verbatimModuleSyntax ([fccb4a9](https://github.com/D1g1talEntr0py/subscribr/commit/fccb4a97fba1d4ad89a7a54f29ef7ee4ced96ea0))
@@ -13,15 +19,6 @@
 ### Tests
 
 * update tests for Subscription object refactor ([277270f](https://github.com/D1g1talEntr0py/subscribr/commit/277270fd8ee4f5cd3efe2bdb655b39ce52b014ff))
-
-### Code Refactoring
-
-* refactor!(subscription): replace Subscription class with plain object type ([b625507](https://github.com/D1g1talEntr0py/subscribr/commit/b6255078c9bccc7812a0f8cd86c97a44320a7e45))
-
-
-### BREAKING CHANGES
-
-* `Subscription` is no longer a class instance; `unsubscribe`/`isSubscribed` now accept a plain `{ eventName, contextEventHandler }` object instead of a `Subscription` instance
 
 ## [4.2.8](https://github.com/D1g1talEntr0py/subscribr/compare/v4.2.7...v4.2.8) (2026-09-19)
 
