@@ -52,6 +52,7 @@ jobs:
           git cliff --github-repo "$GITHUB_REPOSITORY" --tag "v$VERSION" --output CHANGELOG.md
           npm version "$VERSION" --no-git-tag-version
           pnpm lint
+          pnpm test
           pnpm build:minify
           pnpm pack
           pnpm publish --no-git-checks --provenance
