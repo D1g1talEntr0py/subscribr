@@ -4,7 +4,7 @@ interface ContextAwareEventHandler {
 }
 
 /** Context event listener function. */
-type EventHandler = ContextAwareEventHandler['handle'];
+type EventHandler = (event: Event, data?: unknown) => void;
 
 /** Error handler function for handling errors in event listeners. */
 type ErrorHandler = (error: Error, eventName: string, event: Event, data?: unknown) => void;

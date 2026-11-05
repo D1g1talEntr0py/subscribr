@@ -76,6 +76,99 @@ describe('subscribe and publish', () => {
 	});
 });
 
+describe('subscription changes during publish', () => {
+	test('defers new subscriptions until the next publish while preserving ordering', () => {
+		const subscribr = new Subscribr();
+		const seen: string[] = [];
+		let added = false;
+
+		subscribr.subscribe('event', () => {
+			seen.push('first');
+			if (!added) {
+				added = true;
+				subscribr.subscribe('event', () => seen.push('new'));
+			}
+		});
+		subscribr.subscribe('event', () => seen.push('second'));
+
+		subscribr.publish('event');
+		expect(seen).toEqual(['first', 'second']);
+		subscribr.publish('event');
+		expect(seen).toEqual(['first', 'second', 'first', 'second', 'new']);
+	});
+
+	test('does not extend a publish when a handler registers itself again', () => {
+		const subscribr = new Subscribr();
+		let calls = 0;
+		const handler = () => {
+			calls += 1;
+			// Bound the regression even if dispatch incorrectly visits new subscriptions.
+			if (calls < 5) {
+				subscribr.subscribe('event', handler);
+			}
+		};
+		subscribr.subscribe('event', handler);
+
+		subscribr.publish('event');
+		expect(calls).toBe(1);
+		subscribr.publish('event');
+		expect(calls).toBe(3);
+	});
+
+	test('skips a later listener removed before its turn', () => {
+		const subscribr = new Subscribr();
+		const seen: string[] = [];
+		subscribr.subscribe('event', () => {
+			seen.push('first');
+			subscribr.unsubscribe(later);
+		});
+		const later = subscribr.subscribe('event', () => seen.push('removed'));
+		subscribr.subscribe('event', () => seen.push('last'));
+
+		subscribr.publish('event');
+		expect(seen).toEqual(['first', 'last']);
+		expect(subscribr.isSubscribed(later)).toBe(false);
+	});
+
+	test('skips remaining listeners when a handler destroys the instance', () => {
+		const subscribr = new Subscribr();
+		const seen: string[] = [];
+		const first = subscribr.subscribe('event', () => {
+			seen.push('first');
+			subscribr.destroy();
+		});
+		const later = subscribr.subscribe('event', () => seen.push('later'));
+
+		subscribr.publish('event');
+		expect(seen).toEqual(['first']);
+		expect(subscribr.isSubscribed(first)).toBe(false);
+		expect(subscribr.isSubscribed(later)).toBe(false);
+	});
+
+	test('takes a fresh snapshot for nested publishes and skips once listeners already invoked', () => {
+		const subscribr = new Subscribr();
+		const seen: string[] = [];
+		let nested = false;
+		subscribr.subscribe('event', () => {
+			seen.push(nested ? 'first:nested' : 'first:outer');
+			if (!nested) {
+				subscribr.subscribe('event', () => seen.push('new:nested'));
+				nested = true;
+				subscribr.publish('event');
+			}
+		});
+		const once = subscribr.subscribe('event', () => {
+			expect(subscribr.isSubscribed(once)).toBe(false);
+			seen.push('once:nested');
+		}, undefined, { once: true });
+		subscribr.subscribe('event', () => seen.push('last'));
+
+		subscribr.publish('event');
+		expect(seen).toEqual(['first:outer', 'first:nested', 'once:nested', 'last', 'new:nested', 'last']);
+		expect(subscribr.isSubscribed(once)).toBe(false);
+	});
+});
+
 describe('unsubscribe and subscription state', () => {
 	test('unsubscribe removes active subscriptions and returns the correct boolean state', () => {
 		const subscribr = new Subscribr();
@@ -200,6 +293,71 @@ describe('event name validation', () => {
 });
 
 describe('error handling in event handlers', () => {
+	test.each([
+		{ label: 'null', thrown: null },
+		{ label: 'string', thrown: 'listener failure' },
+		{ label: 'object', thrown: { reason: 'listener failure' } },
+		{
+			label: 'object with unsafe coercion',
+			thrown: {
+				[Symbol.toPrimitive]() {
+					throw new Error('Must not coerce the thrown value');
+				},
+			},
+		},
+	])('normalizes a $label throw and preserves metadata, delivery, and once cleanup', ({ thrown }) => {
+		const subscribr = new Subscribr();
+		const errors: Error[] = [];
+		const event = new CustomEvent('errorEvent');
+		const payload = { id: 7 };
+		let laterCalls = 0;
+		subscribr.setErrorHandler((error, eventName, receivedEvent, data) => {
+			errors.push(error);
+			expect(eventName).toBe('errorEvent');
+			expect(receivedEvent).toBe(event);
+			expect(data).toBe(payload);
+			expect(subscribr.isSubscribed(once)).toBe(false);
+		});
+		const once = subscribr.subscribe('errorEvent', () => {
+			throw thrown;
+		}, undefined, { once: true });
+		subscribr.subscribe('errorEvent', () => {
+			laterCalls += 1;
+		});
+
+		subscribr.publish('errorEvent', event, payload);
+		subscribr.publish('errorEvent', event, payload);
+
+		expect(errors).toHaveLength(1);
+		expect(errors[0]).toBeInstanceOf(Error);
+		expect(errors[0]?.cause).toBe(thrown);
+		expect(laterCalls).toBe(2);
+		expect(subscribr.isSubscribed(once)).toBe(false);
+	});
+
+	test('propagates custom error handler failures and stops delivery with once cleanup intact', () => {
+		const subscribr = new Subscribr();
+		const listenerError = new Error('Listener failure');
+		const errorHandlerError = new Error('Error handler failure');
+		let laterCalls = 0;
+		subscribr.setErrorHandler((error) => {
+			expect(error).toBe(listenerError);
+			throw errorHandlerError;
+		});
+		const once = subscribr.subscribe('errorEvent', () => {
+			throw listenerError;
+		}, undefined, { once: true });
+		subscribr.subscribe('errorEvent', () => {
+			laterCalls += 1;
+		});
+
+		expect(() => subscribr.publish('errorEvent')).toThrow(errorHandlerError);
+		expect(laterCalls).toBe(0);
+		expect(subscribr.isSubscribed(once)).toBe(false);
+		subscribr.publish('errorEvent');
+		expect(laterCalls).toBe(1);
+	});
+
 	test('continues delivering events to later handlers after an earlier handler throws', () => {
 		const subscribr = new Subscribr();
 		const seen: string[] = [];

@@ -6,17 +6,17 @@
 [![Codecov](https://codecov.io/gh/D1g1talEntr0py/subscribr/branch/main/graph/badge.svg)](https://codecov.io/gh/D1g1talEntr0py/subscribr)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/node/v/@d1g1tal/subscribr)](https://nodejs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript->=3.3.3-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-declarations-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 A lightweight TypeScript publish/subscribe library implementing the Observer pattern.
 
 ## Features
 
 - 🎯 **Simple API** - Subscribe, publish, and unsubscribe with ease
-- 🔒 **Type-safe** - Full TypeScript support with strict typing
+- 🔒 **TypeScript declarations** - Typed API with explicit publish payload generics
 - 🎪 **Context binding** - Maintain proper `this` context in handlers
 - 🔄 **Once subscriptions** - Auto-unsubscribe after first event via options
-- 🛡️ **Error handling** - Built-in error boundary prevents cascading failures
+- 🛡️ **Error handling** - Synchronous listener errors are reported without stopping dispatch unless the error handler throws
 - ✅ **Validation** - Event name validation for reliable behavior
 - 📦 **Lightweight** - Minimal dependencies (@d1g1tal/collections)
 - 🧪 **Well-tested** - Comprehensive test coverage
@@ -39,7 +39,7 @@ yarn add @d1g1tal/subscribr
 ```html
 <!-- Load as ES Module from CDN -->
 <script type="module">
-  import { Subscribr } from 'https://cdn.jsdelivr.net/npm/@d1g1tal/subscribr@4/dist/subscribr.js';
+  import { Subscribr } from 'https://cdn.jsdelivr.net/npm/@d1g1tal/subscribr@5/dist/subscribr.js';
 </script>
 ```
 
@@ -93,9 +93,9 @@ Subscribe to an event.
 - `eventHandler` (function) - The handler function `(event: Event, data?: unknown) => void`
 - `context` (any, optional) - The `this` context for the handler (defaults to the handler itself)
 - `options` (object, optional) - Subscription options
-  - `once` (boolean) - If true, automatically unsubscribe after first event
+  - `once` (boolean) - If true, unsubscribe before the first invocation, including when the handler throws or publishes recursively
 
-**Returns:** `Subscription` - A subscription object for managing the subscription
+**Returns:** `Subscription` - A structural token with mutable `eventName` and `contextEventHandler` fields. Keep these unchanged to manage the original subscription.
 
 **Throws:**
 - `TypeError` - If event name is not a non-empty string
@@ -133,6 +133,8 @@ subscribr.publish('init', undefined, { status: 'ready' });
 #### `publish(eventName, event?, data?)`
 
 Publish an event to all subscribed handlers.
+
+Delivery is synchronous and follows subscription order. Each call snapshots its initial listeners: additions during dispatch wait until a later publish, while listeners removed before their turn are skipped. Calling `destroy()` during dispatch skips the remaining listeners.
 
 **Parameters:**
 - `eventName` (string) - The name of the event to publish
@@ -195,6 +197,8 @@ subscribr.isSubscribed(subscription); // false
 
 Set a custom error handler for handling errors that occur in event listeners. By default, errors are logged to the console.
 
+Only synchronous listener throws are caught; rejected promises from async listeners are not caught or awaited. Existing `Error` objects retain their identity; non-Error throws are wrapped in an `Error` with the original value in `cause`. If the custom error handler itself throws, its exception propagates from `publish()` and interrupts dispatch.
+
 **Parameters:**
 - `errorHandler` (function) - The error handler function `(error: Error, eventName: string, event: Event, data?: unknown) => void`
 
@@ -208,7 +212,7 @@ subscribr.setErrorHandler((error, eventName, event, data) => {
   errorTracker.report(error, { eventName, data });
 });
 
-// Now if a handler throws an error, it won't break other handlers
+// A synchronous listener throw won't stop other handlers if the error handler returns normally
 subscribr.subscribe('my-event', () => {
   throw new Error('Oops!');
 });
@@ -314,7 +318,7 @@ subscribr.setErrorHandler((error, eventName, event, data) => {
   // Send to error tracking service (if available)
 });
 
-// Even if one handler fails, others continue
+// Synchronous listener failures allow others to continue if the error handler returns normally
 subscribr.subscribe('process-data', (event, data) => {
   if (!data.valid) throw new Error('Invalid data');
   processData(data);
@@ -344,7 +348,7 @@ subscribr.publish('app-ready', undefined, { config: { theme: 'light' } }); // Ig
 
 ## TypeScript Support
 
-Full TypeScript support with strict typing:
+The package includes TypeScript declarations. Event names are not linked to payload types: `publish<T>` checks the payload at that call site, not against subscribers or an event schema. Use shared payload types and explicit publish generics, and type guards when receiving untrusted data.
 
 ```typescript
 import { Subscribr } from '@d1g1tal/subscribr';
@@ -366,7 +370,12 @@ subscribr.publish<UserData>('user-login', undefined, {
   userId: 123,
   userName: 'Alice'
 });
+
+// This mismatched payload can compile even under strict TypeScript:
+subscribr.publish('user-login', undefined, { userId: 'not a number' });
 ```
+
+The typed listener above is accepted even under strict TypeScript because `EventHandler` derives from a method signature (bivariant parameter checking). Its annotation does not enforce the payload type of later publishes.
 
 ## Event Name Validation
 
@@ -432,7 +441,7 @@ subscribr.subscribe('data_update', handler);
 
 ## Browser Support
 
-Supports all modern browsers with ES6 module support and Node.js >= 22
+Targets modern browsers with ES modules. The package requires Node.js >= 24.11.1.
 
 ## Development Environment
 
@@ -440,7 +449,7 @@ Development and release tooling is supported on Unix-like environments only: Lin
 
 ## License
 
-ISC
+MIT — see [LICENSE](./LICENSE).
 
 ## Contributing
 

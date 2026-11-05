@@ -19,9 +19,9 @@
 		}
 	],
 	"engines": {
-		"node": ">=22.22.0"
+		"node": ">=24.11.1"
 	},
-	"packageManager": "pnpm@12.6.0",
+	"packageManager": "pnpm@12.17.0",
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
 		"access": "public"
@@ -50,22 +50,20 @@
 		"test:coverage": "vitest run --coverage",
 		"test:watch": "vitest"
 	},
-	"dependencies": {
-		"@d1g1tal/collections": "^4.0.0"
-	},
 	"devDependencies": {
-		"@d1g1tal/tsbuild": "^3.0.2",
+		"@d1g1tal/collections": "^5.0.1",
+		"@d1g1tal/tsbuild": "^3.0.3",
 		"@eslint/compat": "^2.1.1",
 		"@eslint/js": "^10.0.1",
-		"@types/node": "^26.6.2",
+		"@types/node": "^26.6.6",
 		"@typescript/native": "npm:typescript@^7.0.2",
-		"@vitest/coverage-v8": "^5.0.1",
-		"eslint": "^10.11.0",
+		"@vitest/coverage-v8": "^5.1.0",
+		"eslint": "^10.14.0",
 		"eslint-plugin-compat": "^7.0.2",
-		"eslint-plugin-jsdoc": "^64.5.4",
+		"eslint-plugin-jsdoc": "^65.4.3",
 		"typescript": "npm:@typescript/typescript6@^6.0.2",
-		"typescript-eslint": "^8.70.1",
-		"vitest": "^5.0.1"
+		"typescript-eslint": "^8.72.1",
+		"vitest": "^5.1.0"
 	},
 	"browserslist": [
 		"defaults and fully supports es6",

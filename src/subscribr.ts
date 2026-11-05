@@ -1,11 +1,11 @@
-import { SetMultiMap } from '@d1g1tal/collections/set-multi-map';
+import { SetMultiMap } from '@d1g1tal/collections';
 import { ContextEventHandler } from './context-event-handler';
-import type { Subscription, SubscriptionOptions, EventHandler, ErrorHandler, ContextAwareEventHandler } from './@types';
+import type { Subscription, SubscriptionOptions, EventHandler, ErrorHandler, ContextAwareEventHandler } from './types';
 
 /** A class that allows objects to subscribe to events and be notified when the event is published. */
-export class Subscribr {
+class Subscribr {
 	#errorHandler?: ErrorHandler;
-	readonly #subscribers: SetMultiMap<string, ContextAwareEventHandler> = new SetMultiMap();
+	readonly #subscribers = new SetMultiMap<string, ContextAwareEventHandler>();
 
 	/**
 	 * Subscribe to an event
@@ -50,6 +50,8 @@ export class Subscribr {
 
 	/**
 	 * Publish an event
+	 * Listeners are snapshotted at the start; additions wait for the next publish,
+	 * and listeners removed before their turn are skipped.
 	 *
 	 * @template T
 	 * @param eventName The name of the event.
@@ -63,14 +65,17 @@ export class Subscribr {
 
 		if (contextEventHandlers === undefined || contextEventHandlers.size === 0) { return }
 
-		for (const contextEventHandler of contextEventHandlers) {
+		for (const contextEventHandler of [ ...contextEventHandlers ]) {
+			if (!this.#subscribers.hasValue(eventName, contextEventHandler)) { continue }
+
 			try {
 				contextEventHandler.handle(event, data);
 			} catch (error) {
+				const handlerError = error instanceof Error ? error : new Error('Event handler threw a non-Error value', { cause: error });
 				if (this.#errorHandler !== undefined) {
-					this.#errorHandler(error as Error, eventName, event, data);
+					this.#errorHandler(handlerError, eventName, event, data);
 				} else {
-					console.error(`Error in event handler for '${eventName}':`, error);
+					console.error(`Error in event handler for '${eventName}':`, handlerError);
 				}
 			}
 		}
@@ -90,6 +95,7 @@ export class Subscribr {
 
 	/**
 	 * Set a custom error handler for handling errors that occur in event listeners.
+	 * Non-Error thrown values are wrapped in an Error with the original value as its cause.
 	 * If not set, errors will be logged to the console.
 	 *
 	 * @param errorHandler The error handler function to call when an error occurs in an event listener.
@@ -131,5 +137,6 @@ export class Subscribr {
 	}
 }
 
+export { Subscribr };
 export { ContextEventHandler } from './context-event-handler';
-export type { Subscription, EventHandler } from './@types';
+export type { Subscription, EventHandler } from './types';
