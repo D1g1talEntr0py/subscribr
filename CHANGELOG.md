@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.5](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.4...v5.0.5) - 2026-11-05
+
+
+
+
+### Bug Fixes
+* **core:** harden dispatch and align the v5 package ([862d4cb](https://github.com/D1g1talEntr0py/subscribr/commit/862d4cb4ec117601e7ae614317a1e709d148cb6b))
+
+
+
+
+
+
+### Chores
+* **release:** add version bump check before release process ([f33e6f8](https://github.com/D1g1talEntr0py/subscribr/commit/f33e6f8ef699bb1b657ce241245f64362fdacc3f))
+
+### Chores
+* **release:** strip headers and include unreleased changes in release notes generation ([500f72d](https://github.com/D1g1talEntr0py/subscribr/commit/500f72db7e8fbd31054c1c32dec5ef14c5ba8001))
+
+
+
+
+
+### Continuous Integration
+* **release:** test package before publishing ([3c1a516](https://github.com/D1g1talEntr0py/subscribr/commit/3c1a5161a09d988461c0142f28770e6863203cac))
+
+
+
 ## [5.0.4](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.3...v5.0.4) - 2026-09-24
 
 
@@ -17,6 +45,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 * **release:** link generated changelog entries ([3755a79](https://github.com/D1g1talEntr0py/subscribr/commit/3755a79e69cc100b08cae53c95b99324eb189288))
+
+### Chores
+* **release:** 5.0.4 [skip ci] ([3a20851](https://github.com/D1g1talEntr0py/subscribr/commit/3a208514da87540bbf42c49d289482bc893731ca))
 
 
 
