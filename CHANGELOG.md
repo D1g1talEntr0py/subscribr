@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.1](https://github.com/D1g1talEntr0py/subscribr/compare/v6.0.0...v6.0.1) - 2026-11-07
+
+
+
+
+### Bug Fixes
+* **changelog:** update changelog template to group section headers ([a29ca94](https://github.com/D1g1talEntr0py/subscribr/commit/a29ca9494d8c18b4a99987d89f8037fb36273862))
+
+
+
+
+
+
+
+
+
+
+
+
 ## [6.0.0](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.5...v6.0.0) - 2026-11-07
 
 
@@ -24,6 +43,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * **deps:** update package tooling ([d8e1c57](https://github.com/D1g1talEntr0py/subscribr/commit/d8e1c57aa0d74b82f759e261ad28949f8da7645d))
 
 * **editor:** enable native TypeScript tooling ([3da1925](https://github.com/D1g1talEntr0py/subscribr/commit/3da19252367693f3c985b3dc38e9c86d4d96dae7))
+
+* **release:** 6.0.0 [skip ci] ([e19d3aa](https://github.com/D1g1talEntr0py/subscribr/commit/e19d3aa6fe09b8f36115d6d6aac09ac272e4c5d8))
+
+
 
 ### Tests
 * **coverage:** simplify Vitest configuration ([300caf9](https://github.com/D1g1talEntr0py/subscribr/commit/300caf93379855271112be92f186d9bdc984ce7e))
@@ -1055,3 +1078,4 @@ chore(main): release 4.1.0 ([8ebffbc](https://github.com/D1g1talEntr0py/subscrib
 -Added method 'isSubscribed' to check if the Subscription is active.
 -Updated README.
 -Added first unit tests. ([ab6f232](https://github.com/D1g1talEntr0py/subscribr/commit/ab6f23210e9179fcdd7cb940679b952a6fd74769))
+
