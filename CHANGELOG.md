@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking Changes
 * **handler:** rename context handler dispatch ([0194ab9](https://github.com/D1g1talEntr0py/subscribr/commit/0194ab9b176815dc65abd89990d6192f38e7ce16))
 
-### Breaking Changes
 * **core:** add subscription and publish options ([4edfa96](https://github.com/D1g1talEntr0py/subscribr/commit/4edfa96e14be5269025c0c85d669e70a298eb583))
 
 
@@ -24,10 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Chores
 * **deps:** update package tooling ([d8e1c57](https://github.com/D1g1talEntr0py/subscribr/commit/d8e1c57aa0d74b82f759e261ad28949f8da7645d))
 
-### Chores
 * **editor:** enable native TypeScript tooling ([3da1925](https://github.com/D1g1talEntr0py/subscribr/commit/3da19252367693f3c985b3dc38e9c86d4d96dae7))
-
-
 
 ### Tests
 * **coverage:** simplify Vitest configuration ([300caf9](https://github.com/D1g1talEntr0py/subscribr/commit/300caf93379855271112be92f186d9bdc984ce7e))
@@ -52,10 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Chores
 * **release:** add version bump check before release process ([f33e6f8](https://github.com/D1g1talEntr0py/subscribr/commit/f33e6f8ef699bb1b657ce241245f64362fdacc3f))
 
-### Chores
 * **release:** strip headers and include unreleased changes in release notes generation ([500f72d](https://github.com/D1g1talEntr0py/subscribr/commit/500f72db7e8fbd31054c1c32dec5ef14c5ba8001))
 
-### Chores
 * **release:** 5.0.5 [skip ci] ([89b4122](https://github.com/D1g1talEntr0py/subscribr/commit/89b41228004097c0ed4e5e861dfb1b90a6f98b95))
 
 
@@ -80,7 +74,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Chores
 * **release:** link generated changelog entries ([3755a79](https://github.com/D1g1talEntr0py/subscribr/commit/3755a79e69cc100b08cae53c95b99324eb189288))
 
-### Chores
 * **release:** 5.0.4 [skip ci] ([3a20851](https://github.com/D1g1talEntr0py/subscribr/commit/3a208514da87540bbf42c49d289482bc893731ca))
 
 
@@ -213,10 +206,8 @@ BREAKING CHANGE: `Subscription` is no longer a class instance; `unsubscribe`/`is
 ### Chores
 * **types:** enable isolated declarations ([da670c4](https://github.com/D1g1talEntr0py/subscribr/commit/da670c48fa5e6e0b51adee936e9ea6afffd7c0ee))
 
-### Chores
 * **deps:** update package tooling ([6802f7b](https://github.com/D1g1talEntr0py/subscribr/commit/6802f7b8d05dcd1c3535557b52fdaa345c036645))
 
-### Chores
 * **release:** 4.2.8 [skip ci] ([c1d88f2](https://github.com/D1g1talEntr0py/subscribr/commit/c1d88f2f18257fd7ea2485e52441584f124e4bb2))
 
 
@@ -236,7 +227,6 @@ BREAKING CHANGE: `Subscription` is no longer a class instance; `unsubscribe`/`is
 ### Bug Fixes
 * **exports:** move exports to subscribr.ts for better organization ([bf041f5](https://github.com/D1g1talEntr0py/subscribr/commit/bf041f5f59d8de081c79fd6af684eaad5a056288))
 
-### Bug Fixes
 * **package:** update node engine requirement to >=24.11.0 ([a8d4c63](https://github.com/D1g1talEntr0py/subscribr/commit/a8d4c635aaffbe7d020fd6387b9818f0a2968686))
 
 
@@ -291,7 +281,6 @@ BREAKING CHANGE: `Subscription` is no longer a class instance; `unsubscribe`/`is
 ### Chores
 * **deps:** update dependencies ([cb8410d](https://github.com/D1g1talEntr0py/subscribr/commit/cb8410d7cd53fb39439939f3e659ebc482101c0b))
 
-### Chores
 * **release:** 4.2.5 [skip ci] ([85757aa](https://github.com/D1g1talEntr0py/subscribr/commit/85757aa664920d351f50839d8986db40ab62718e))
 
 
@@ -330,7 +319,6 @@ BREAKING CHANGE: `Subscription` is no longer a class instance; `unsubscribe`/`is
 ### Bug Fixes
 * **deps:** upgrade @d1g1tal/collections to v3 and dev tooling ([4d37568](https://github.com/D1g1talEntr0py/subscribr/commit/4d37568c8d4f6028f389ca81400f0ce3deb2eb0d))
 
-### Bug Fixes
 * **release:** restore angular preset so changelog headings render ([1bbd184](https://github.com/D1g1talEntr0py/subscribr/commit/1bbd184843ea14b162ed2861a1863e677ff7aadf))
 
 
@@ -344,7 +332,6 @@ BREAKING CHANGE: `Subscription` is no longer a class instance; `unsubscribe`/`is
 ### Chores
 * **build:** drop --force flag from minify script ([7cc402c](https://github.com/D1g1talEntr0py/subscribr/commit/7cc402cfd8c693e7d837cf91c258e0953a17b953))
 
-### Chores
 * **release:** 4.2.3 [skip ci] ([fd4a5b6](https://github.com/D1g1talEntr0py/subscribr/commit/fd4a5b690dffdc935a978f3cbeb07b55227be553))
 
 
@@ -378,10 +365,8 @@ BREAKING CHANGE: `Subscription` is no longer a class instance; `unsubscribe`/`is
 ### Chores
 * **config:** add ESLint configuration file with recommended settings ([3705e81](https://github.com/D1g1talEntr0py/subscribr/commit/3705e816c3d4fa7b817dfd9e5918402d430c72f1))
 
-### Chores
 * update pnpm workspace configuration and tsconfig schema ([0f024ea](https://github.com/D1g1talEntr0py/subscribr/commit/0f024eaff3f9adf259532e778b3ec834100cbfd4))
 
-### Chores
 * **release:** 4.2.2 [skip ci] ([071665e](https://github.com/D1g1talEntr0py/subscribr/commit/071665e1462f7e29ea8422b18086c6354e3368a5))
 
 
@@ -406,14 +391,12 @@ BREAKING CHANGE: `Subscription` is no longer a class instance; `unsubscribe`/`is
 ### Chores
 * **deps-dev:** update development dependencies ([365819d](https://github.com/D1g1talEntr0py/subscribr/commit/365819de2dc05d85774407d4c50bf0d459489239))
 
-### Chores
 * chore!(deps): Updates dependencies and requires Node.js >= 22
 
 Drops support for Node.js 20, establishing Node.js 22 as the minimum required version.
 Updates CI workflows, documentation, and the complete dependency tree to align with the new runtime constraints.
 Improves security and stability through dependency upgrades. ([085d399](https://github.com/D1g1talEntr0py/subscribr/commit/085d3999a0eab13c0e4b8bf13993c2995b5d0397))
 
-### Chores
 * **release:** 4.2.1 [skip ci] ([e1d159c](https://github.com/D1g1talEntr0py/subscribr/commit/e1d159c678c8207fbfcb69b82a772a25bcf74399))
 
 
@@ -441,10 +424,8 @@ Improves security and stability through dependency upgrades. ([085d399](https://
 ### Chores
 * **deps:** update @d1g1tal/collections to the latest version ([b6693ad](https://github.com/D1g1talEntr0py/subscribr/commit/b6693ad221353f08f2b1322188478cfd3a9764da))
 
-### Chores
 * **test:** remove commented out vitest configuration ([89e6c15](https://github.com/D1g1talEntr0py/subscribr/commit/89e6c157570e326d8d9e72a7fdb79217bd3b3b2f))
 
-### Chores
 * **release:** 4.2.0 [skip ci] ([c499653](https://github.com/D1g1talEntr0py/subscribr/commit/c4996539a091b6f8623dad15512a1805ad76d12b))
 
 
@@ -516,10 +497,8 @@ Improves security and stability through dependency upgrades. ([085d399](https://
 ### Chores
 * update tooling config for pnpm v10 and VS Code ([d60e2e6](https://github.com/D1g1talEntr0py/subscribr/commit/d60e2e6544c3a5c54f7e53051e74b170cec6a1fe))
 
-### Chores
 * add breaking change release rule and update README badge ([006c7a6](https://github.com/D1g1talEntr0py/subscribr/commit/006c7a6c5a8b2e02d8557ed7eed1097a09cf98f3))
 
-### Chores
 * **release:** 4.1.11 [skip ci] ([7e2eb5d](https://github.com/D1g1talEntr0py/subscribr/commit/7e2eb5da95b0c0194b0aedc4ddee7c0c7df91250))
 
 
@@ -528,7 +507,6 @@ Improves security and stability through dependency upgrades. ([085d399](https://
 ### Build System
 * **deps:** upgrade typescript to v6 and update dev dependencies ([47909cf](https://github.com/D1g1talEntr0py/subscribr/commit/47909cfa9be65b76c394a5e08e70186bba40e41e))
 
-### Build System
 * **config:** update tsconfig.json for TypeScript 6.0 compatibility ([6e6b2e7](https://github.com/D1g1talEntr0py/subscribr/commit/6e6b2e7669438c690dd24edb91c989e6c33a1d49))
 
 
@@ -542,7 +520,6 @@ Improves security and stability through dependency upgrades. ([085d399](https://
 ### Bug Fixes
 * **deps:** security update for dependency ([91254b1](https://github.com/D1g1talEntr0py/subscribr/commit/91254b120bef1a6d942196ac71eceafc0d66008a))
 
-### Bug Fixes
 * Updates collection import to point to package root ([789fa27](https://github.com/D1g1talEntr0py/subscribr/commit/789fa272374714ac3fe620455c4b5f3e219cce9c))
 
 
@@ -556,10 +533,8 @@ Improves security and stability through dependency upgrades. ([085d399](https://
 ### Chores
 * **ci:** add .githooks ([071ab06](https://github.com/D1g1talEntr0py/subscribr/commit/071ab061ada767bf722d8b5501f75555fdf798b7))
 
-### Chores
 * **deps:** Updates internal packages and synchronizes lockfile ([d275d88](https://github.com/D1g1talEntr0py/subscribr/commit/d275d88680cbcf0cff6cea0cd1281800ad153873))
 
-### Chores
 * **release:** 4.1.10 [skip ci] ([a7d9a2a](https://github.com/D1g1talEntr0py/subscribr/commit/a7d9a2a0db894c39e3dcad9fa4cba29aeddd7ad8))
 
 
@@ -587,16 +562,12 @@ Improves security and stability through dependency upgrades. ([085d399](https://
 ### Chores
 * bump dependencies to latest patch versions ([7e76bf3](https://github.com/D1g1talEntr0py/subscribr/commit/7e76bf324f621b42d6b1a8279fd1bd675e90a4a2))
 
-### Chores
 * update README.md to correct some errors and add documentation for 'destroy()' ([3e8a467](https://github.com/D1g1talEntr0py/subscribr/commit/3e8a467278c13c2dbc69eacab9513be351c69400))
 
-### Chores
 * bump dev dependencies ([2295922](https://github.com/D1g1talEntr0py/subscribr/commit/22959222ae3c497e219d9296297ce7968e7259ff))
 
-### Chores
 * transition to MIT license and update project branding ([99653d6](https://github.com/D1g1talEntr0py/subscribr/commit/99653d6a7984bef8beda94af67b8e47050bb7dce))
 
-### Chores
 * **release:** 4.1.9 [skip ci] ([50c5c65](https://github.com/D1g1talEntr0py/subscribr/commit/50c5c65e9ec52702ed0a86c490efa3b82d4f6983))
 
 
@@ -606,13 +577,10 @@ Improves security and stability through dependency upgrades. ([085d399](https://
 ### Continuous Integration
 * simplify workflows and update README badges ([07fb3bd](https://github.com/D1g1talEntr0py/subscribr/commit/07fb3bdb35ab578b282e55a6a3df161784a1673d))
 
-### Continuous Integration
 * updated release-please 'uses' to googleapis/release-please-action@v4 ([a660c37](https://github.com/D1g1talEntr0py/subscribr/commit/a660c37e593bcb0472182ad6d7c588fc1f99848f))
 
-### Continuous Integration
 * migrate to semantic-release ([453df84](https://github.com/D1g1talEntr0py/subscribr/commit/453df848fe3c61047d9e2dc56ef1e5ab6351b115))
 
-### Continuous Integration
 * upgrade workflow actions and refine semantic-release pipeline ([08284ed](https://github.com/D1g1talEntr0py/subscribr/commit/08284edb677712d793a67311dfbfa9bac1b2dbd4))
 
 
@@ -814,7 +782,6 @@ chore(main): release 4.1.2 ([b9d7ef4](https://github.com/D1g1talEntr0py/subscrib
 ### Bug Fixes
 * add packageManager field for pnpm/action-setup ([ccbff83](https://github.com/D1g1talEntr0py/subscribr/commit/ccbff8318dceceb1b56afce35c8d87da0ed6d787))
 
-### Bug Fixes
 * use --noEmit for type-check script ([10076e5](https://github.com/D1g1talEntr0py/subscribr/commit/10076e5471b08b0f355e199df8e2b0b135892b32))
 
 
@@ -843,16 +810,12 @@ chore(main): release 4.1.1 ([bb8e289](https://github.com/D1g1talEntr0py/subscrib
 ### Features
 * add setErrorHandler for custom error handling\n\nAdd ErrorHandler and SubscriptionOptions types. Update exports. ([5a675b0](https://github.com/D1g1talEntr0py/subscribr/commit/5a675b0cf9a617b77ec63940944a78ce256e4e9a))
 
-### Features
 * add error boundary preventing handler errors from blocking others\n\nEvent handler errors are now caught and handled without breaking other subscribers.\nAdd setErrorHandler(), once option, event name validation, and destroy(). ([951a2b9](https://github.com/D1g1talEntr0py/subscribr/commit/951a2b98528fd34d8249a68321d484bca84b8ee6))
 
-### Features
 * add once option to subscribe for auto-unsubscribe after first event\n\nAdd comprehensive tests for once subscriptions, error handling, validation, and destroy. ([76fdcce](https://github.com/D1g1talEntr0py/subscribr/commit/76fdcce9d6f1795f904f546d94931d362fb0c975))
 
-### Features
 * add event name validation with TypeError and Error\n\nUpdate CHANGELOG and README with documentation for all new features. ([53fd032](https://github.com/D1g1talEntr0py/subscribr/commit/53fd03254bf5e510ae415cd71e7e87168dfb9827))
 
-### Features
 * add destroy method to clear all subscriptions\n\nUpdate dependencies, lockfile, gitignore, and copilot instructions. ([4559c3d](https://github.com/D1g1talEntr0py/subscribr/commit/4559c3df88ffc051e8b6c0ad6e48f4dd8c4dac4f))
 
 
@@ -871,7 +834,6 @@ chore(main): release 4.1.1 ([bb8e289](https://github.com/D1g1talEntr0py/subscrib
 ### Continuous Integration
 * add GitHub Actions CI, release-please, and Codecov integration\n\n- Add CI workflow (lint, type-check, test, coverage upload, build)\n- Add release workflow with release-please and npm publish --provenance\n- Add release-please config seeded at 4.0.4\n- Add codecov.yml configuration\n- Add json coverage reporter to vitest config\n- Remove sonar outputFile from vitest config\n- Add CI and Codecov badges to README ([0c84e7a](https://github.com/D1g1talEntr0py/subscribr/commit/0c84e7a9356a01525a2c10bd05dc2d106b7aca05))
 
-### Continuous Integration
 * remove CODECOV_TOKEN from CI workflow\n\nCodecov no longer requires a token for public repos. ([93b3eaa](https://github.com/D1g1talEntr0py/subscribr/commit/93b3eaabb0cea049f03062d1b2eca58cf64cd48d))
 
 
@@ -937,7 +899,6 @@ chore(main): release 4.1.0 ([8ebffbc](https://github.com/D1g1talEntr0py/subscrib
 ### Other Changes
 * Maintenance update: updated dependencies and tsconfig.json ([9d37ae4](https://github.com/D1g1talEntr0py/subscribr/commit/9d37ae4fd3874cdd75694ceeb1770cc29ae3a09b))
 
-### Other Changes
 * Dependency Updates ([f0e6ce1](https://github.com/D1g1talEntr0py/subscribr/commit/f0e6ce1c0bd4e1ed17839e8daa1996f943c254ac))
 
 
@@ -959,7 +920,6 @@ chore(main): release 4.1.0 ([8ebffbc](https://github.com/D1g1talEntr0py/subscrib
 ### Other Changes
 * Maintenance release ([713d89c](https://github.com/D1g1talEntr0py/subscribr/commit/713d89c58773d42e4b124fc8447630db7aceb889))
 
-### Other Changes
 * Project is now using TypeScript and Vitest
 - Converted source to TypeScript.
 - Migrated from Jest to Vitest for unit testing.
@@ -1085,17 +1045,13 @@ chore(main): release 4.1.0 ([8ebffbc](https://github.com/D1g1talEntr0py/subscrib
 ### Other Changes
 * Initial commit ([ebe4d30](https://github.com/D1g1talEntr0py/subscribr/commit/ebe4d307cbfa2156e9c1eebd763c85eb992ea9d2))
 
-### Other Changes
 * Initial commit ([d51fd47](https://github.com/D1g1talEntr0py/subscribr/commit/d51fd47507c594e9ea123074ca55e1a11f5a64eb))
 
-### Other Changes
 * Merge branch 'main' of github.com:D1g1talEntr0py/subscribr ([85e5dc8](https://github.com/D1g1talEntr0py/subscribr/commit/85e5dc8dcbab929762087303958ce79598e3b4d8))
 
-### Other Changes
 * Refactored Subscribr class - Still needs some work
 -Calling subscribe will return an instance of a Subscription class.
 -Added ContextEventHandler class to add to the context and event handler to the underlying Set of the SetMultiMap.
 -Added method 'isSubscribed' to check if the Subscription is active.
 -Updated README.
 -Added first unit tests. ([ab6f232](https://github.com/D1g1talEntr0py/subscribr/commit/ab6f23210e9179fcdd7cb940679b952a6fd74769))
-
