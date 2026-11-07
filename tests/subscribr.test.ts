@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { ContextEventHandler } from '../src/context-event-handler.js';
 import { Subscribr, type Subscription } from '../src/subscribr.js';
 
@@ -19,7 +19,7 @@ describe('Subscribr instance behavior', () => {
 
 		const subscription = subscribr.subscribe('myEvent', function(this: unknown, event: Event, data?: unknown) {
 			received.push({ event, data, context: this });
-		}, context);
+		}, { context });
 
 		expect(subscription).toMatchObject({
 			eventName: 'myEvent',
@@ -31,7 +31,7 @@ describe('Subscribr instance behavior', () => {
 
 		const event = new CustomEvent('myEvent');
 		const payload = { amount: 42 };
-		subscribr.publish('myEvent', event, payload);
+		subscribr.publish('myEvent', { event, data: payload });
 
 		expect(received).toHaveLength(1);
 		expect(received[0]).toMatchObject({
@@ -39,6 +39,17 @@ describe('Subscribr instance behavior', () => {
 			data: payload,
 			context,
 		});
+	});
+
+	test('defaults the context to the handler when options omit it', () => {
+		const subscribr = new Subscribr();
+		let receivedContext: unknown;
+		function handler(this: unknown) { receivedContext = this }
+
+		subscribr.subscribe('defaultContext', handler, { once: true });
+		subscribr.publish('defaultContext');
+
+		expect(receivedContext).toBe(handler);
 	});
 });
 
@@ -56,7 +67,7 @@ describe('subscribe and publish', () => {
 
 		const event = new CustomEvent('user-updated');
 		const payload = { id: 7 };
-		subscribr.publish('user-updated', event, payload);
+		subscribr.publish('user-updated', { event, data: payload });
 
 		expect(seen).toHaveLength(2);
 		expect(seen[0]).toMatchObject({ eventName: 'user-updated', event, data: payload });
@@ -160,7 +171,7 @@ describe('subscription changes during publish', () => {
 		const once = subscribr.subscribe('event', () => {
 			expect(subscribr.isSubscribed(once)).toBe(false);
 			seen.push('once:nested');
-		}, undefined, { once: true });
+		}, { once: true });
 		subscribr.subscribe('event', () => seen.push('last'));
 
 		subscribr.publish('event');
@@ -311,22 +322,22 @@ describe('error handling in event handlers', () => {
 		const event = new CustomEvent('errorEvent');
 		const payload = { id: 7 };
 		let laterCalls = 0;
-		subscribr.setErrorHandler((error, eventName, receivedEvent, data) => {
+		const errorHandler = (error: Error, eventName: string, receivedEvent: Event, data?: unknown) => {
 			errors.push(error);
 			expect(eventName).toBe('errorEvent');
 			expect(receivedEvent).toBe(event);
 			expect(data).toBe(payload);
 			expect(subscribr.isSubscribed(once)).toBe(false);
-		});
+		};
 		const once = subscribr.subscribe('errorEvent', () => {
 			throw thrown;
-		}, undefined, { once: true });
+		}, { once: true, errorHandler });
 		subscribr.subscribe('errorEvent', () => {
 			laterCalls += 1;
 		});
 
-		subscribr.publish('errorEvent', event, payload);
-		subscribr.publish('errorEvent', event, payload);
+		subscribr.publish('errorEvent', { event, data: payload });
+		subscribr.publish('errorEvent', { event, data: payload });
 
 		expect(errors).toHaveLength(1);
 		expect(errors[0]).toBeInstanceOf(Error);
@@ -340,13 +351,13 @@ describe('error handling in event handlers', () => {
 		const listenerError = new Error('Listener failure');
 		const errorHandlerError = new Error('Error handler failure');
 		let laterCalls = 0;
-		subscribr.setErrorHandler((error) => {
+		const errorHandler = (error: Error) => {
 			expect(error).toBe(listenerError);
 			throw errorHandlerError;
-		});
+		};
 		const once = subscribr.subscribe('errorEvent', () => {
 			throw listenerError;
-		}, undefined, { once: true });
+		}, { once: true, errorHandler });
 		subscribr.subscribe('errorEvent', () => {
 			laterCalls += 1;
 		});
@@ -382,19 +393,19 @@ describe('error handling in event handlers', () => {
 		let capturedData: unknown = null;
 		const testError = new Error('Test error');
 
-		subscribr.setErrorHandler((error, eventName, event, data) => {
+		const errorHandler = (error: Error, eventName: string, event: Event, data?: unknown) => {
 			capturedError = error;
 			capturedEventName = eventName;
 			capturedEvent = event;
 			capturedData = data;
-		});
+		};
 		subscribr.subscribe('errorEvent', () => {
 			throw testError;
-		});
+		}, { errorHandler });
 
 		const event = new CustomEvent('errorEvent');
 		const data = { userId: 123 };
-		subscribr.publish('errorEvent', event, data);
+		subscribr.publish('errorEvent', { event, data });
 
 		expect(capturedError).toBe(testError);
 		expect(capturedEventName).toBe('errorEvent');
@@ -407,17 +418,62 @@ describe('error handling in event handlers', () => {
 		let errorCalls = 0;
 		let successCalls = 0;
 
-		subscribr.setErrorHandler(() => {
+		const errorHandler = () => {
 			errorCalls += 1;
-		});
+		};
 		subscribr.subscribe('successEvent', () => {
 			successCalls += 1;
 		});
 
-		subscribr.publish('successEvent');
+		subscribr.publish('successEvent', { errorHandler });
 
 		expect(successCalls).toBe(1);
 		expect(errorCalls).toBe(0);
+	});
+
+	test('uses a custom error handler only for the publish call that provides it', () => {
+		const subscribr = new Subscribr();
+		const errorHandler = vi.fn();
+		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+		subscribr.subscribe('errorEvent', () => {
+			throw new Error('Listener failure');
+		});
+
+		try {
+			subscribr.publish('errorEvent', { errorHandler });
+			subscribr.publish('errorEvent');
+
+			expect(errorHandler).toHaveBeenCalledOnce();
+			expect(consoleError).toHaveBeenCalledOnce();
+		} finally {
+			consoleError.mockRestore();
+		}
+	});
+
+	test('prefers the subscription error handler over the publish error handler', () => {
+		const subscribr = new Subscribr();
+		const subscriptionErrorHandler = vi.fn();
+		const publishErrorHandler = vi.fn();
+		subscribr.subscribe('errorEvent', () => {
+			throw new Error('Listener failure');
+		}, { errorHandler: subscriptionErrorHandler });
+
+		subscribr.publish('errorEvent', { errorHandler: publishErrorHandler });
+
+		expect(subscriptionErrorHandler).toHaveBeenCalledOnce();
+		expect(publishErrorHandler).not.toHaveBeenCalled();
+	});
+
+	test('uses the publish error handler when the subscription has no error handler', () => {
+		const subscribr = new Subscribr();
+		const publishErrorHandler = vi.fn();
+		subscribr.subscribe('errorEvent', () => {
+			throw new Error('Listener failure');
+		});
+
+		subscribr.publish('errorEvent', { errorHandler: publishErrorHandler });
+
+		expect(publishErrorHandler).toHaveBeenCalledOnce();
 	});
 });
 
@@ -428,15 +484,15 @@ describe('once subscriptions', () => {
 		const context = { tag: 'once-context' };
 		const subscription = subscribr.subscribe('onceEvent', function(this: unknown, event: Event, data?: unknown) {
 			seen.push({ event, data, context: this });
-		}, context, { once: true });
+		}, { context, once: true });
 
 		expect(subscribr.isSubscribed(subscription)).toBe(true);
 
-		subscribr.publish('onceEvent', new CustomEvent('onceEvent'), { value: 1 });
+		subscribr.publish('onceEvent', { event: new CustomEvent('onceEvent'), data: { value: 1 } });
 		expect(seen).toHaveLength(1);
 		expect(subscribr.isSubscribed(subscription)).toBe(false);
 
-		subscribr.publish('onceEvent', new CustomEvent('onceEvent'), { value: 2 });
+		subscribr.publish('onceEvent', { event: new CustomEvent('onceEvent'), data: { value: 2 } });
 		expect(seen).toHaveLength(1);
 		expect(seen[0]).toMatchObject({ data: { value: 1 }, context });
 	});
@@ -449,7 +505,7 @@ describe('once subscriptions', () => {
 		const subscription = subscribr.subscribe('onceEvent', function(this: unknown) {
 			capturedContext = this;
 			callCount += 1;
-		}, context, { once: true });
+		}, { context, once: true });
 
 		subscribr.unsubscribe(subscription);
 		subscribr.publish('onceEvent');
@@ -467,7 +523,7 @@ describe('once subscriptions', () => {
 		subscription = subscribr.subscribe('onceEvent', () => {
 			callCount += 1;
 			subscribr.publish('onceEvent');
-		}, undefined, { once: true });
+		}, { once: true });
 
 		subscribr.publish('onceEvent');
 
@@ -481,13 +537,13 @@ describe('once subscriptions', () => {
 		let handlerCalls = 0;
 		let subscription;
 
-		subscribr.setErrorHandler(() => {
+		const errorHandler = () => {
 			errorCalls += 1;
-		});
+		};
 		subscription = subscribr.subscribe('onceEvent', () => {
 			handlerCalls += 1;
 			throw new Error('once failure');
-		}, undefined, { once: true });
+		}, { once: true, errorHandler });
 
 		subscribr.publish('onceEvent');
 		subscribr.publish('onceEvent');
@@ -501,9 +557,9 @@ describe('once subscriptions', () => {
 		const subscribr = new Subscribr();
 		const seen: string[] = [];
 
-		subscribr.subscribe('multiOnce', () => seen.push('first'), undefined, { once: true });
-		subscribr.subscribe('multiOnce', () => seen.push('second'), undefined, { once: true });
-		subscribr.subscribe('multiOnce', () => seen.push('third'), undefined, { once: true });
+		subscribr.subscribe('multiOnce', () => seen.push('first'), { once: true });
+		subscribr.subscribe('multiOnce', () => seen.push('second'), { once: true });
+		subscribr.subscribe('multiOnce', () => seen.push('third'), { once: true });
 
 		subscribr.publish('multiOnce');
 		expect(seen).toEqual(['first', 'second', 'third']);
@@ -514,7 +570,7 @@ describe('once subscriptions', () => {
 
 	test('validates the event name before creating a once subscription', () => {
 		const subscribr = new Subscribr();
-		expect(() => subscribr.subscribe('', () => {}, undefined, { once: true })).toThrow(TypeError);
-		expect(() => subscribr.subscribe(' event', () => {}, undefined, { once: true })).toThrow(Error);
+		expect(() => subscribr.subscribe('', () => {}, { once: true })).toThrow(TypeError);
+		expect(() => subscribr.subscribe(' event', () => {}, { once: true })).toThrow(Error);
 	});
 });

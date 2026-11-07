@@ -5,11 +5,11 @@
 ## Architecture
 
 - Use `SetMultiMap` for multi-value storage per event—never native Map
-- `subscribe(eventName, handler, context = handler)` wraps handlers in `ContextEventHandler`
+- `subscribe(eventName, handler, { context = handler, once, errorHandler } = {})` wraps handlers in `ContextEventHandler`; `errorHandler` handles synchronous errors thrown by that subscription's handler
 - `unsubscribe()` removes specific handler; event key deleted when last handler removed
-- `publish()` accepts `Event` or creates `CustomEvent`; delivers synchronously in subscription order, snapshotting initial listeners and skipping listeners removed before their turn (including by `destroy()`). Additions wait for a later publish.
+- `publish(eventName, { event, data, errorHandler } = {})` uses the given `Event` or creates a `CustomEvent`; delivers synchronously in subscription order, snapshotting initial listeners and skipping listeners removed before their turn (including by `destroy()`). Additions wait for a later publish. Its `errorHandler` handles synchronous listener errors when the subscription has no error handler.
 - Once subscriptions are removed before invocation, including recursive publishes and listener throws.
-- The error boundary catches synchronous listener throws only, not rejected promises. Existing `Error` objects retain identity; other throws become an `Error` with the original value in `cause`. A custom error handler's own throw propagates and interrupts dispatch.
+- The error boundary catches synchronous listener throws only, not rejected promises. Subscription `errorHandler` takes precedence over the publish-level handler (which defaults to `console.error`). Existing `Error` objects retain identity; other throws become an `Error` with the original value in `cause`. A custom error handler's own throw propagates and interrupts dispatch.
 
 ## Build & Development
 
@@ -30,7 +30,7 @@
 
 - Vitest with `describe` blocks: creation, functional, edge cases
 - Mock with `vi.fn()` for trackable listeners
-- Example: `subscribr.subscribe('event', vi.fn(), context); expect(...).toHaveBeenCalledWith(...)`
+- Example: `subscribr.subscribe('event', vi.fn(), { context }); expect(...).toHaveBeenCalledWith(...)`
 
 ## Dependencies & Integration
 

@@ -57,7 +57,7 @@ const subscription = subscribr.subscribe('user-login', (event, data) => {
 });
 
 // Publish an event
-subscribr.publish('user-login', undefined, { userId: 123 });
+subscribr.publish('user-login', { data: { userId: 123 } });
 // Output: User logged in: 123
 
 // Check if subscribed
@@ -84,16 +84,17 @@ const subscribr = new Subscribr();
 
 ### Methods
 
-#### `subscribe(eventName, eventHandler, context?, options?)`
+#### `subscribe(eventName, eventHandler, options?)`
 
 Subscribe to an event.
 
 **Parameters:**
 - `eventName` (string) - The name of the event to subscribe to
 - `eventHandler` (function) - The handler function `(event: Event, data?: unknown) => void`
-- `context` (any, optional) - The `this` context for the handler (defaults to the handler itself)
 - `options` (object, optional) - Subscription options
-  - `once` (boolean) - If true, unsubscribe before the first invocation, including when the handler throws or publishes recursively
+  - `context` (any, optional) - The `this` context for the handler (defaults to the handler itself)
+  - `once` (boolean, optional) - If true, unsubscribe before the first invocation, including when the handler throws or publishes recursively
+  - `errorHandler` (function, optional) - Handles synchronous errors thrown by this subscription's handler
 
 **Returns:** `Subscription` - A structural token with mutable `eventName` and `contextEventHandler` fields. Keep these unchanged to manage the original subscription.
 
@@ -114,23 +115,23 @@ const myObject = {
     console.log(this.name, 'received:', data);
   }
 };
-subscribr.subscribe('my-event', myObject.handleEvent, myObject);
+subscribr.subscribe('my-event', myObject.handleEvent, { context: myObject });
 
 // One-time subscription using options
 subscribr.subscribe('init', (event, data) => {
   console.log('Initialization complete:', data);
-}, undefined, { once: true });
+}, { once: true });
 
-subscribr.publish('init', undefined, { status: 'ready' });
+subscribr.publish('init', { data: { status: 'ready' } });
 // Output: Initialization complete: { status: 'ready' }
 
-subscribr.publish('init', undefined, { status: 'ready' });
+subscribr.publish('init', { data: { status: 'ready' } });
 // No output - handler was auto-unsubscribed
 ```
 
 ---
 
-#### `publish(eventName, event?, data?)`
+#### `publish(eventName, options?)`
 
 Publish an event to all subscribed handlers.
 
@@ -138,8 +139,10 @@ Delivery is synchronous and follows subscription order. Each call snapshots its 
 
 **Parameters:**
 - `eventName` (string) - The name of the event to publish
-- `event` (Event, optional) - A custom event object (defaults to `new CustomEvent(eventName)`)
-- `data` (any, optional) - Data to pass to event handlers
+- `options` (object, optional) - Publish options
+  - `event` (Event, optional) - A custom event object (defaults to `new CustomEvent(eventName)`)
+  - `data` (any, optional) - Data to pass to event handlers
+  - `errorHandler` (function, optional) - Handles synchronous event handler errors for subscriptions without their own error handler; defaults to logging errors to the console
 
 **Returns:** `void`
 
@@ -149,11 +152,11 @@ Delivery is synchronous and follows subscription order. Each call snapshots its 
 
 ```javascript
 // Publish with just event name and data
-subscribr.publish('user-action', undefined, { action: 'click', target: 'button' });
+subscribr.publish('user-action', { data: { action: 'click', target: 'button' } });
 
 // Publish with custom event
 const customEvent = new CustomEvent('custom-event', { detail: 'info' });
-subscribr.publish('custom-event', customEvent, { extra: 'data' });
+subscribr.publish('custom-event', { event: customEvent, data: { extra: 'data' } });
 ```
 
 ---
@@ -193,35 +196,31 @@ subscribr.isSubscribed(subscription); // false
 
 ---
 
-#### `setErrorHandler(errorHandler)`
+#### Error handling
 
-Set a custom error handler for handling errors that occur in event listeners. By default, errors are logged to the console.
-
-Only synchronous listener throws are caught; rejected promises from async listeners are not caught or awaited. Existing `Error` objects retain their identity; non-Error throws are wrapped in an `Error` with the original value in `cause`. If the custom error handler itself throws, its exception propagates from `publish()` and interrupts dispatch.
+An `errorHandler` may be provided in `subscribe()` options to handle synchronous errors from that subscription's event handler. An `errorHandler` may also be provided in `publish()` options; it handles errors for subscriptions without their own handler. If neither is provided, errors are logged to the console. Rejected promises from async listeners are not caught or awaited. Existing `Error` objects retain their identity; non-Error throws are wrapped in an `Error` with the original value in `cause`. If the selected error handler itself throws, its exception propagates from `publish()` and interrupts dispatch.
 
 **Parameters:**
-- `errorHandler` (function) - The error handler function `(error: Error, eventName: string, event: Event, data?: unknown) => void`
-
-**Returns:** `void`
+- `errorHandler` (function, optional) - In either option object, the handler `(error: Error, eventName: string, event: Event, data?: unknown) => void`
 
 ```javascript
-// Set a custom error handler
-subscribr.setErrorHandler((error, eventName, event, data) => {
-  console.error(`Error in handler for '${eventName}':`, error.message);
-  // Send to error tracking service
-  errorTracker.report(error, { eventName, data });
-});
-
-// A synchronous listener throw won't stop other handlers if the error handler returns normally
+// Use a subscription-specific error handler
 subscribr.subscribe('my-event', () => {
   throw new Error('Oops!');
-});
+}, { errorHandler: (error, eventName) => {
+  console.error(`Subscription failed for '${eventName}':`, error.message);
+} });
 
 subscribr.subscribe('my-event', () => {
   console.log('This still runs!'); // ✅ Executes despite the error above
 });
 
-subscribr.publish('my-event');
+// This handler handles failures from subscriptions without their own error handler
+subscribr.publish('my-event', { errorHandler: (error, eventName, event, data) => {
+  console.error(`Error in handler for '${eventName}':`, error.message);
+  // Send to error tracking service
+  errorTracker.report(error, { eventName, data });
+} });
 // Output: Error in handler for 'my-event': Oops!
 // Output: This still runs!
 ```
@@ -258,7 +257,7 @@ subscribr.subscribe('data-update', (event, data) => {
   console.log('Handler 2:', data);
 });
 
-subscribr.publish('data-update', undefined, { value: 42 });
+subscribr.publish('data-update', { data: { value: 42 } });
 // Output:
 // Handler 1: { value: 42 }
 // Handler 2: { value: 42 }
@@ -274,7 +273,7 @@ subscribr.subscribe('user-click', (event, data) => {
 });
 
 document.getElementById('myButton').addEventListener('click', (event) => {
-  subscribr.publish('user-click', event, { elementId: event.target.id });
+  subscribr.publish('user-click', { event, data: { elementId: event.target.id } });
 });
 ```
 
@@ -287,7 +286,7 @@ class UserManager {
     this.users = [];
 
     // Subscribe with proper context binding
-    this.subscribr.subscribe('user-added', this.onUserAdded, this);
+    this.subscribr.subscribe('user-added', this.onUserAdded, { context: this });
   }
 
   onUserAdded(event, data) {
@@ -297,7 +296,7 @@ class UserManager {
   }
 
   addUser(user) {
-    this.subscribr.publish('user-added', undefined, { user });
+    this.subscribr.publish('user-added', { data: { user } });
   }
 }
 
@@ -312,13 +311,7 @@ manager.addUser({ id: 1, name: 'Alice' });
 ```javascript
 const subscribr = new Subscribr();
 
-// Set up error tracking
-subscribr.setErrorHandler((error, eventName, event, data) => {
-  console.error(`Error in handler for '${eventName}':`, error.message);
-  // Send to error tracking service (if available)
-});
-
-// Synchronous listener failures allow others to continue if the error handler returns normally
+// Synchronous listener failures allow others to continue if the selected error handler returns normally
 subscribr.subscribe('process-data', (event, data) => {
   if (!data.valid) throw new Error('Invalid data');
   processData(data);
@@ -327,6 +320,13 @@ subscribr.subscribe('process-data', (event, data) => {
 subscribr.subscribe('process-data', (event, data) => {
   // This still executes even if the previous handler throws
   updateUI(data);
+});
+
+subscribr.publish('process-data', {
+  errorHandler: (error, eventName, event, data) => {
+    console.error(`Error in handler for '${eventName}':`, error.message);
+    // Send to error tracking service (if available)
+  }
 });
 ```
 
@@ -339,11 +339,11 @@ const subscribr = new Subscribr();
 subscribr.subscribe('app-ready', (event, data) => {
   console.log('App initialized with config:', data.config);
   startApplication(data.config);
-}, undefined, { once: true });
+}, { once: true });
 
 // This will only trigger the handler once
-subscribr.publish('app-ready', undefined, { config: { theme: 'dark' } });
-subscribr.publish('app-ready', undefined, { config: { theme: 'light' } }); // Ignored
+subscribr.publish('app-ready', { data: { config: { theme: 'dark' } } });
+subscribr.publish('app-ready', { data: { config: { theme: 'light' } } }); // Ignored
 ```
 
 ## TypeScript Support
@@ -366,13 +366,15 @@ subscribr.subscribe('user-login', (event: Event, data?: UserData) => {
   }
 });
 
-subscribr.publish<UserData>('user-login', undefined, {
-  userId: 123,
-  userName: 'Alice'
+subscribr.publish<UserData>('user-login', {
+  data: {
+    userId: 123,
+    userName: 'Alice'
+  }
 });
 
 // This mismatched payload can compile even under strict TypeScript:
-subscribr.publish('user-login', undefined, { userId: 'not a number' });
+subscribr.publish('user-login', { data: { userId: 'not a number' } });
 ```
 
 The typed listener above is accepted even under strict TypeScript because `EventHandler` derives from a method signature (bivariant parameter checking). Its annotation does not enforce the payload type of later publishes.
@@ -405,15 +407,15 @@ subscribr.subscribe('data_update', handler);
 
 2. **Use `{ once: true }` option for one-time events** to avoid manual cleanup:
    ```javascript
-   subscribr.subscribe('init', handler, undefined, { once: true }); // Auto-unsubscribes
+   subscribr.subscribe('init', handler, { once: true }); // Auto-unsubscribes
    ```
 
-3. **Set up error handling** for production applications:
+3. **Handle publish errors** in production applications:
    ```javascript
-   subscribr.setErrorHandler((error, eventName) => {
+   subscribr.publish('event', { errorHandler: (error, eventName) => {
      console.error(`Event '${eventName}' error:`, error);
      // Report to error tracking service if available
-   });
+   } });
    ```
 
 4. **Use meaningful event names** with consistent naming conventions:
@@ -431,7 +433,7 @@ subscribr.subscribe('data_update', handler);
    ```javascript
    class MyClass {
      constructor() {
-       subscribr.subscribe('event', this.handleEvent, this);
+       subscribr.subscribe('event', this.handleEvent, { context: this });
      }
      handleEvent(event, data) {
        // 'this' refers to MyClass instance
