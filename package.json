@@ -21,7 +21,7 @@
 	"engines": {
 		"node": ">=24.11.1"
 	},
-	"packageManager": "pnpm@12.17.0",
+	"packageManager": "pnpm@12.18.0",
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
 		"access": "public"
@@ -60,7 +60,7 @@
 		"@vitest/coverage-v8": "^5.1.0",
 		"eslint": "^10.14.0",
 		"eslint-plugin-compat": "^7.0.2",
-		"eslint-plugin-jsdoc": "^65.4.3",
+		"eslint-plugin-jsdoc": "^65.4.4",
 		"typescript": "npm:@typescript/typescript6@^6.0.2",
 		"typescript-eslint": "^8.72.1",
 		"vitest": "^5.1.0"
