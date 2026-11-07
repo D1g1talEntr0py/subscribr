@@ -25,7 +25,7 @@ describe('Subscribr instance behavior', () => {
 			eventName: 'myEvent',
 			contextEventHandler: expect.any(ContextEventHandler),
 		});
-		expect(typeof subscription.contextEventHandler.handle).toBe('function');
+		expect(typeof subscription.contextEventHandler.dispatch).toBe('function');
 		expect(Object.prototype.toString.call(subscription.contextEventHandler)).toBe('[object ContextEventHandler]');
 		expect(subscribr.isSubscribed(subscription)).toBe(true);
 

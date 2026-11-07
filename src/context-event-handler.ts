@@ -15,12 +15,12 @@ export class ContextEventHandler implements ContextAwareEventHandler {
 	}
 
 	/**
-	 * Call the event handler for the provided event.
+	 * Dispatch the event to the bound event handler with the provided context.
 	 *
 	 * @param event The event to handle
 	 * @param data The value to be passed to the event handler as a parameter.
 	 */
-	handle(event: Event, data?: unknown): void {
+	dispatch(event: Event, data?: unknown): void {
 		this.#eventHandler.call(this.#context, event, data);
 	}
 

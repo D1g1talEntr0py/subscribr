@@ -1,6 +1,6 @@
 interface ContextAwareEventHandler {
-	/** The actual event handler function. */
-	handle(event: Event, data?: unknown): void;
+	/** Dispatch the event to the bound event handler with the provided context. */
+	dispatch(event: Event, data?: unknown): void;
 }
 
 /** Context event listener function. */

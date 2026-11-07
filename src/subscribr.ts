@@ -69,7 +69,7 @@ class Subscribr {
 			if (!this.#subscribers.hasValue(eventName, contextEventHandler)) { continue }
 
 			try {
-				contextEventHandler.handle(event, data);
+				contextEventHandler.dispatch(event, data);
 			} catch (error) {
 				const handlerError = error instanceof Error ? error : new Error('Event handler threw a non-Error value', { cause: error });
 				if (this.#errorHandler !== undefined) {
