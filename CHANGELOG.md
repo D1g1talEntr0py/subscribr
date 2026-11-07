@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.5...v6.0.0) - 2026-11-07
+
+
+### Breaking Changes
+* **handler:** rename context handler dispatch ([0194ab9](https://github.com/D1g1talEntr0py/subscribr/commit/0194ab9b176815dc65abd89990d6192f38e7ce16))
+
+### Breaking Changes
+* **core:** add subscription and publish options ([4edfa96](https://github.com/D1g1talEntr0py/subscribr/commit/4edfa96e14be5269025c0c85d669e70a298eb583))
+
+
+
+
+
+
+
+
+### Chores
+* **deps:** update package tooling ([d8e1c57](https://github.com/D1g1talEntr0py/subscribr/commit/d8e1c57aa0d74b82f759e261ad28949f8da7645d))
+
+### Chores
+* **editor:** enable native TypeScript tooling ([3da1925](https://github.com/D1g1talEntr0py/subscribr/commit/3da19252367693f3c985b3dc38e9c86d4d96dae7))
+
+
+
+### Tests
+* **coverage:** simplify Vitest configuration ([300caf9](https://github.com/D1g1talEntr0py/subscribr/commit/300caf93379855271112be92f186d9bdc984ce7e))
+
+
+
+
+
 ## [5.0.5](https://github.com/D1g1talEntr0py/subscribr/compare/v5.0.4...v5.0.5) - 2026-11-05
 
 
@@ -23,6 +54,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Chores
 * **release:** strip headers and include unreleased changes in release notes generation ([500f72d](https://github.com/D1g1talEntr0py/subscribr/commit/500f72db7e8fbd31054c1c32dec5ef14c5ba8001))
+
+### Chores
+* **release:** 5.0.5 [skip ci] ([89b4122](https://github.com/D1g1talEntr0py/subscribr/commit/89b41228004097c0ed4e5e861dfb1b90a6f98b95))
 
 
 
